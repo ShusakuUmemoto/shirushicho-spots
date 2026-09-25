@@ -1,0 +1,33 @@
+{
+  "_comment": "寺社・城の詳しい情報の公開元（details.py が読む）。行政のオープンデータを1つずつ足す。columns は CSV の列名。無い項目は書かない。",
+  "sources": [
+    {
+      "id": "kyoto-pref-tourism",
+      "name": "京都府 観光施設一覧",
+      "publisher": "京都府",
+      "license": "CC BY 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "pageURL": "https://data.bodik.jp/dataset/260002_kankou_shisetsu",
+      "url": "https://data.bodik.jp/dataset/6ad07527-e6ad-4528-b1ad-00e8b5bd1b38/resource/7f63e283-49c4-4737-a838-ccea5cdbc205/download/260002kankoushisetsu.csv",
+      "prefecture": "京都府",
+      "columns": {
+        "name": "名称",
+        "address": "住所",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "days": "利用可能曜日",
+        "openTime": "開始時間",
+        "closeTime": "終了時間",
+        "hoursNote": "利用可能日時特記事項",
+        "fee": "料金（基本）",
+        "feeDetail": "料金（詳細）",
+        "description": "説明",
+        "access": "アクセス方法",
+        "parking": "駐車場情報",
+        "phone": "連絡先電話番号",
+        "url": "URL",
+        "updated": "情報更新日"
+      }
+    }
+  ]
+}
