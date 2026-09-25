@@ -115,4 +115,6 @@ python3 scripts/spot/details.py
 | `updated` | 公開元の情報更新日（2つの公開元をつないだときは公開元の名前つき） |
 | `source`・`license` | 公開元の名前・ライセンス |
 
-`meta` には、詳しい情報の件数（`detailsCount`）と公開元（`detailsSources`）も入ります。
+`meta` には、詳しい情報の件数（`detailsCount`）・公開元（`detailsSources`）・データの版（`dataVersion`）・書き足した日（`updatedAt`）も入ります。
+データの版は `spots` と `spot_details` の全行から作る値（SHA-256 の先頭 16 桁）で、中身が同じなら流し直しても変わりません。
+アプリに入れる DB を作ったときは、同じ版を `GoshuinApp/Resources/spots-version.txt` にも書きます（アプリは2つを比べて、古いデータを自動で落とし直します）。

@@ -21,11 +21,14 @@
   「国宝（2棟）：本堂、…」の形にまとめて cultural_properties の項目に書く。検索結果の CSV は手で書き出す（2,000 件ずつ）ので files に並べる。
   建物は境内に散らばるので BUILDING_MATCH_DISTANCE 以内で、名称・所有者名が寺社の名前に合う（名称が寺社の名前で始まる形も含む）ものに当てる。
   正式な名前と呼び名が違う寺社（賀茂御祖神社／下鴨神社）は、公開元の aliases に書く。
+- DB の中身（spots と spot_details）から版を作り、meta の dataVersion と、アプリ本体に入る spots-version.txt に書く。
+  アプリは手元に写した DB の版が本体の版と違えば、自動で落とし直す（中身が同じなら流し直しても版は変わらない）。
 - 標準ライブラリだけで動く。
 """
 
 import argparse
 import csv
+import datetime
 import hashlib
 import io
 import json
@@ -43,6 +46,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SOURCES = Path(__file__).resolve().parent / "sources.json"
 DEFAULT_DB = ROOT / "GoshuinApp" / "Resources" / "Spots" / "spots.sqlite"
+# アプリ本体に入れるデータの版（ODR に入れない。アプリは手元に写した DB の meta の dataVersion と比べ、違えば自動で落とし直す）
+DEFAULT_VERSION_FILE = ROOT / "GoshuinApp" / "Resources" / "spots-version.txt"
+# データの版の長さ（中身の SHA-256 の先頭の16進の桁数）
+VERSION_LENGTH = 16
 CACHE_DIR = Path(tempfile.gettempdir()) / "goshuin-spot-cache"
 USER_AGENT = "ShirushichoSpotDetails/0.1 (https://github.com/ShusakuUmemoto/shirushicho-spots)"
 # 取得の待ち時間（秒）とやり直す回数
@@ -529,9 +536,26 @@ def write(connection: sqlite3.Connection, found: dict[str, dict], sources: list[
     connection.executemany("INSERT OR REPLACE INTO meta VALUES (?, ?)", [
         ("detailsCount", str(len(found))),
         ("detailsSources", "、".join(credit(source) for source in sources)),
+        ("dataVersion", data_version(connection)),
+        ("updatedAt", datetime.date.today().isoformat()),
     ])
     connection.commit()
     connection.execute("VACUUM")
+
+
+def data_version(connection: sqlite3.Connection) -> str:
+    """DB の中身（spots と spot_details の全行）から作る版。中身が同じなら同じ値になる"""
+    digest = hashlib.sha256()
+    for table in ("spots", "spot_details"):
+        for row in connection.execute(f"SELECT * FROM {table} ORDER BY id"):
+            digest.update(repr(row).encode())
+    return digest.hexdigest()[:VERSION_LENGTH]
+
+
+def write_version_file(connection: sqlite3.Connection, path: Path) -> None:
+    version = connection.execute("SELECT value FROM meta WHERE key = 'dataVersion'").fetchone()[0]
+    path.write_text(version + "\n", encoding="utf-8")
+    print(f"○ データの版 {version} を書きました: {path}")
 
 
 def main() -> None:
@@ -590,8 +614,11 @@ def main() -> None:
             print(f"  寺社・城らしいのに当たらなかった {len(unmatched)} 件: {'、'.join(unmatched[:60])}", flush=True)
 
     write(connection, found, used_sources)
-    connection.close()
     print(f"○ {len(found)} か所の詳しい情報を書き足しました: {args.db}")
+    # アプリに入れる DB を作ったときだけ、本体の版のファイルも書き換える（試しの DB で本体の版を変えない）
+    if args.db.resolve() == DEFAULT_DB.resolve():
+        write_version_file(connection, DEFAULT_VERSION_FILE)
+    connection.close()
 
 
 if __name__ == "__main__":
