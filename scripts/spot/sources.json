@@ -1,5 +1,5 @@
 {
-  "_comment": "寺社・城の詳しい情報の公開元（details.py が読む）。行政のオープンデータを1つずつ足す。columns は CSV の列名。無い項目は書かない。",
+  "_comment": "寺社・城の詳しい情報の公開元（details.py が読む）。行政のオープンデータを1つずつ足す。columns は CSV の列名。列のない項目は書かない。updated は情報更新日の列がないときに出す公開元の更新日。並びは、同じ寺社に当たったときに先に使う順。 kind が culturalProperties の公開元（文化庁）は、手で書き出した CSV を files に並べる（material/ は Git に入れないので、書き出し方は README を見る）。aliases は正式な名前 → DB の呼び名。",
   "sources": [
     {
       "id": "kyoto-pref-tourism",
@@ -27,6 +27,144 @@
         "phone": "連絡先電話番号",
         "url": "URL",
         "updated": "情報更新日"
+      }
+    },
+    {
+      "id": "osaka-pref-tourism",
+      "name": "大阪府 観光施設一覧",
+      "publisher": "大阪府",
+      "license": "CC BY 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "pageURL": "https://data.bodik.jp/dataset/270008_tourism",
+      "url": "https://data.bodik.jp/dataset/ba02ece9-05f6-478a-91a2-01bdf55c44fa/resource/abe57732-c0c1-4e97-ae6f-9e6d30ec82bb/download/270008_tourism.csv",
+      "prefecture": "大阪府",
+      "updated": "2026-03",
+      "columns": {
+        "name": "名称",
+        "address": "所在地_連結表記",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "days": "利用可能曜日",
+        "openTime": "開始時間",
+        "closeTime": "終了時間",
+        "hoursNote": "利用可能日時特記事項",
+        "fee": "料金(基本)",
+        "feeDetail": "料金(詳細)",
+        "description": "説明",
+        "access": "アクセス方法",
+        "parking": "駐車場情報",
+        "phone": "連絡先電話番号",
+        "url": "URL"
+      }
+    },
+    {
+      "id": "nagasaki-pref-tabinet",
+      "name": "長崎県 ながさき旅ネット 観光スポット情報",
+      "publisher": "長崎県",
+      "license": "CC BY 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "pageURL": "https://data.bodik.jp/dataset/420000_nagasakitabinet",
+      "url": "https://data.bodik.jp/dataset/e4cf571c-d22b-44f1-a5d8-8c92bcd6c11e/resource/e3907cf2-f9f0-4bb5-b94c-ea6f4abe460b/download/420000_tourism_nagasakitabinet.csv",
+      "prefecture": "長崎県",
+      "updated": "2023-03",
+      "columns": {
+        "name": "名称",
+        "address": "住所",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "days": "利用可能曜日",
+        "openTime": "開始時間",
+        "closeTime": "終了時間",
+        "hoursNote": "利用可能日時特記事項",
+        "fee": "料金（基本）",
+        "feeDetail": "料金（詳細）",
+        "description": "説明",
+        "access": "アクセス方法",
+        "parking": "駐車場情報",
+        "phone": "連絡先電話番号",
+        "url": "URL"
+      }
+    },
+    {
+      "id": "mie-pref-cultural-assets",
+      "name": "三重県 文化資産等情報",
+      "publisher": "三重県",
+      "license": "CC BY 2.1 JP",
+      "licenseURL": "https://creativecommons.org/licenses/by/2.1/jp/",
+      "pageURL": "https://www.bunka.pref.mie.lg.jp/87741000001.htm",
+      "url": "https://www.bunka.pref.mie.lg.jp/common/content/000413658.csv",
+      "prefecture": "三重県",
+      "filter": {
+        "column": "文化資産等の種別",
+        "values": [
+          "寺社等",
+          "城跡等"
+        ]
+      },
+      "columns": {
+        "name": "文化資産等の名称",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "description": "文化資産等の詳細情報",
+        "updated": "最終調査日"
+      }
+    },
+    {
+      "id": "kumamoto-pref-tourism",
+      "name": "熊本県 観光施設一覧",
+      "publisher": "熊本県",
+      "license": "CC BY 4.0",
+      "licenseURL": "https://creativecommons.org/licenses/by/4.0/deed.ja",
+      "pageURL": "https://data.bodik.jp/dataset/430005_04",
+      "url": "https://data.bodik.jp/dataset/7e5d487c-b732-42e7-9d7d-45d62335640b/resource/cdf25cc0-06e0-40e6-a632-cfd67e40524b/download/107292r4.12.16.csv",
+      "prefecture": "熊本県",
+      "updated": "2022-12",
+      "columns": {
+        "name": "名称",
+        "address": "住所",
+        "latitude": "緯度",
+        "longitude": "経度",
+        "days": "利用可能曜日",
+        "openTime": "開始時間",
+        "closeTime": "終了時間",
+        "hoursNote": "利用可能日時特記事項",
+        "fee": "料金（基本）",
+        "feeDetail": "料金（詳細）",
+        "description": "説明",
+        "access": "アクセス方法",
+        "parking": "駐車場情報",
+        "phone": "連絡先電話番号",
+        "url": "URL"
+      }
+    },
+    {
+      "id": "bunka-kokushitei-buildings",
+      "kind": "culturalProperties",
+      "name": "文化庁 国指定文化財等データベース",
+      "publisher": "文化庁",
+      "license": "文化庁の利用規約",
+      "licenseURL": "https://kunishitei.bunka.go.jp/",
+      "pageURL": "https://kunishitei.bunka.go.jp/",
+      "files": [
+        "material/bunka/download_temple.csv",
+        "material/bunka/download_jinja.csv",
+        "material/bunka/download_castle.csv"
+      ],
+      "aliases": {
+        "賀茂御祖神社": "下鴨神社",
+        "賀茂別雷神社": "上賀茂神社",
+        "教王護国寺": "東寺",
+        "慈照寺": "銀閣寺",
+        "鹿苑寺": "金閣寺"
+      },
+      "columns": {
+        "name": "名称",
+        "building": "棟名",
+        "grade": "種別1",
+        "owner": "所有者名",
+        "prefecture": "都道府県",
+        "latitude": "緯度",
+        "longitude": "経度"
       }
     }
   ]
