@@ -18,7 +18,7 @@
 - ダウンロードした CSV は一時フォルダに保存し、やり直しても送らない。
 - 各公開元のライセンス（多くは CC BY 4.0）に従い、アプリでは出典を出す。
 - 文化庁の国指定文化財等データベース（kind が culturalProperties の公開元）は、国宝・重要文化財の建造物の1棟ずつの行を寺社・城に当て、
-  「国宝（2件）：本堂、…」の形にまとめて cultural_properties の項目に書く。検索結果の CSV は手で書き出す（2,000 件ずつ）ので files に並べる。
+  「国宝（2棟）：本堂、…」の形にまとめて cultural_properties の項目に書く。検索結果の CSV は手で書き出す（2,000 件ずつ）ので files に並べる。
   建物は境内に散らばるので BUILDING_MATCH_DISTANCE 以内で、名称・所有者名が寺社の名前に合う（名称が寺社の名前で始まる形も含む）ものに当てる。
   正式な名前と呼び名が違う寺社（賀茂御祖神社／下鴨神社）は、公開元の aliases に書く。
 - 標準ライブラリだけで動く。
@@ -64,6 +64,10 @@ BUILDING_SEARCH_DEGREES = 0.006
 MAX_LISTED_BUILDINGS = 6
 # 文化財の種別を並べる順
 PROPERTY_GRADES = ("国宝", "重要文化財")
+# 棟名が建物の一部だけのもの（法隆寺の「西院大垣」と「東院大垣」の「南面」）。名称とつなげて出す
+PART_NAME_PATTERN = re.compile(r"^[東西南北]+(面|側|方)?$")
+# 名前が同じで、同じ建物の一覧を持たせる寺社・城の点どうしの距離（m）。OSM に同じ城の点が2つあると、建物が近い方に分かれる（彦根城）
+SAME_SPOT_DISTANCE = 1_000.0
 # 摂社・末社など、境内の別の社の建物（本社の本殿より後に並べる）
 SUB_SHRINE_PATTERN = re.compile(r"^(摂社|末社|境内社|旧)")
 # 先に並べる建物（姫路城なら渡櫓より大天守、寺なら門より本堂）。前にあるものほど先
@@ -134,7 +138,11 @@ def read_rows(source: dict, refresh: bool) -> list[dict] | None:
     ほかの項目の列がなければ、その項目だけを空にする。filter があれば、その列が values のどれかの行だけにする"""
     local_file = source.get("file")
     if local_file:
-        data = (Path(local_file) if Path(local_file).is_absolute() else ROOT / local_file).read_bytes()
+        path = Path(local_file) if Path(local_file).is_absolute() else ROOT / local_file
+        if not path.exists():
+            print(f"  × ファイルがないので飛ばします: {path}（手で書き出して置く公開元。README を見る）", flush=True)
+            return None
+        data = path.read_bytes()
     else:
         data = download(source["url"], refresh)
     reader = csv.DictReader(io.StringIO(decode(data)))
@@ -259,7 +267,8 @@ def read_building_rows(source: dict, refresh: bool) -> list[dict] | None:
     rows: list[dict] = []
     seen: set[tuple[str, ...]] = set()
     for file in source["files"]:
-        file_rows = read_rows({**source, "file": file}, refresh)
+        # 列の対応はファイルごとに写す（read_rows は CSV にない列を消すので、次のファイルに持ち越さない）
+        file_rows = read_rows({**source, "file": file, "columns": dict(source["columns"])}, refresh)
         if file_rows is None:
             return None
         for row in file_rows:
@@ -288,7 +297,7 @@ def building_aliases(row: dict, columns: dict, renames: dict[str, str]) -> set[s
 def match_building(connection: sqlite3.Connection, row: dict, columns: dict,
                    renames: dict[str, str]) -> tuple[str, str] | None:
     """文化財の建物の1行に当たる DB の寺社・城の id と名前。当たらなければ None"""
-    lat, lon = number(row.get(columns["latitude"])), number(row.get(columns["longitude"]))
+    lat, lon = number(row.get(columns.get("latitude", ""))), number(row.get(columns.get("longitude", "")))
     targets = building_aliases(row, columns, renames)
     if not targets:
         return None
@@ -327,22 +336,41 @@ def compact(text: str) -> str:
     return re.sub(r"\s+", "", unicodedata.normalize("NFKC", text))
 
 
-def building_label(row: dict, columns: dict, spot_name: str) -> str:
-    """画面に並べる建物の名前。棟名があれば棟名、なければ名称から寺社の名前を外したもの（清水寺本堂 → 本堂）。
-    1件の中の「、」は「・」にする（「本社本殿、幣殿、拝殿」で1件。件どうしを「、」で区切るため）。
+def building_names(row: dict, columns: dict, spot_name: str) -> tuple[str, str]:
+    """建物の名称から寺社の名前を外したもの（清水寺本堂 → 本堂。名称が寺社の名前だけならそのまま）と棟名"""
+    name = compact(value(row, columns, "name"))
+    # 旧字体をそろえて比べる（1文字ずつ替えるので長さは変わらない。廣八幡神社／広八幡神社拝殿）
+    variant = name.translate(VARIANT_CHARACTERS)
+    for prefix in [spot_name, *owner_names(row, columns)]:
+        prefix = compact(prefix).translate(VARIANT_CHARACTERS)
+        if prefix and variant.startswith(prefix) and len(variant) > len(prefix):
+            name = name[len(prefix):]
+            break
+    return name, compact(value(row, columns, "building"))
+
+
+def building_label(name: str, building: str, is_ambiguous: bool) -> str:
+    """画面に並べる建物の名前。棟名があれば棟名、なければ名称（寺社の名前を外したもの）。
+    棟名が一部だけ（南面）か、同じ寺社に同じ棟名の別の建物があるときは「西院大垣(南面)」とつなげる。
+    1つの建物の中の「、」は「・」にする（「本社本殿、幣殿、拝殿」で1棟。建物どうしを「、」で区切るため）。
     括弧だけの棟名（姫路城の「(ニの渡櫓)」）は括弧を外す"""
-    label = compact(value(row, columns, "building"))
-    if not label:
-        label = compact(value(row, columns, "name"))
-        # 旧字体をそろえて比べる（1文字ずつ替えるので長さは変わらない。廣八幡神社／広八幡神社拝殿）
-        variant = label.translate(VARIANT_CHARACTERS)
-        for prefix in [spot_name, *owner_names(row, columns)]:
-            prefix = compact(prefix).translate(VARIANT_CHARACTERS)
-            if prefix and variant.startswith(prefix) and len(variant) > len(prefix):
-                label = label[len(prefix):]
-                break
-    label = re.sub(r"^\((.+)\)$", r"\1", label)
+    building = re.sub(r"^\((.+)\)$", r"\1", building)
+    if not building:
+        label = name
+    elif name and name not in building and building not in name and (is_ambiguous or PART_NAME_PATTERN.match(building)):
+        label = f"{name}({building})"
+    else:
+        label = building
     return label.replace("、", "・")
+
+
+def labels_of(buildings: list[tuple[str, str, str]]) -> list[tuple[str, str]]:
+    """（種別・名称・棟名）の並びを（種別・画面の名前）にする。同じ棟名が別の名称にあれば、名称とつなげて分ける"""
+    names_by_building: dict[str, set[str]] = {}
+    for _, name, building in buildings:
+        names_by_building.setdefault(building, set()).add(name)
+    return [(grade, building_label(name, building, len(names_by_building[building]) > 1))
+            for grade, name, building in buildings]
 
 
 def building_order(label: str) -> tuple[bool, int, int]:
@@ -353,7 +381,8 @@ def building_order(label: str) -> tuple[bool, int, int]:
 
 
 def properties_text(buildings: list[tuple[str, str]]) -> str:
-    """種別と建物の名前の組を「国宝（2件）：本堂、三重塔」の行にまとめる（種別ごとに1行。多ければ「など」）"""
+    """種別と建物の名前の組を「国宝（2棟）：本堂、三重塔」の行にまとめる（種別ごとに1行。多ければ「など」）。
+    文化庁の CSV は1棟1行なので、数は棟で数える（指定の「件」は複数の棟をまとめることがあり、CSV からは数えられない）"""
     lines = []
     for grade in PROPERTY_GRADES:
         labels = sorted(dict.fromkeys(label for building_grade, label in buildings if building_grade == grade),
@@ -362,8 +391,21 @@ def properties_text(buildings: list[tuple[str, str]]) -> str:
             continue
         listed = "、".join(labels[:MAX_LISTED_BUILDINGS])
         more = " など" if len(labels) > MAX_LISTED_BUILDINGS else ""
-        lines.append(f"{grade}（{len(labels)}件）：{listed}{more}")
+        lines.append(f"{grade}（{len(labels)}棟）：{listed}{more}")
     return "\n".join(lines)
+
+
+def same_spot_groups(connection: sqlite3.Connection, spot_ids: list[str]) -> dict[str, list[str]]:
+    """建物の当たった寺社・城ごとに、同じ都道府県で名前が同じ SAME_SPOT_DISTANCE 以内の点（自分を含む）。
+    OSM に同じ城の点が2つあると、建物が近い方に分かれて、どちらを押しても一覧が欠ける（彦根城）ので、まとめて両方に出す"""
+    spots = {spot_id: (normalize(name), prefecture, lat, lon) for spot_id, name, prefecture, lat, lon in connection.execute(
+        f"SELECT id, name, prefecture, lat, lon FROM spots WHERE id IN ({','.join('?' * len(spot_ids))})", spot_ids)}
+    groups = {}
+    for spot_id, (name, prefecture, lat, lon) in spots.items():
+        groups[spot_id] = [other for other, (other_name, other_prefecture, other_lat, other_lon) in spots.items()
+                           if other_name == name and other_prefecture == prefecture
+                           and distance(lat, lon, other_lat, other_lon) <= SAME_SPOT_DISTANCE]
+    return groups
 
 
 def collect_cultural_properties(connection: sqlite3.Connection, source: dict,
@@ -371,7 +413,7 @@ def collect_cultural_properties(connection: sqlite3.Connection, source: dict,
     """文化財の建物の行を寺社・城ごとにまとめ、cultural_properties だけを埋めた詳しい情報にする"""
     columns = source["columns"]
     renames = source.get("aliases", {})
-    buildings: dict[str, list[tuple[str, str]]] = {}
+    buildings: dict[str, list[tuple[str, str, str]]] = {}
     unmatched = []
     for row in rows:
         result = match_building(connection, row, columns, renames)
@@ -380,12 +422,13 @@ def collect_cultural_properties(connection: sqlite3.Connection, source: dict,
             continue
         spot_id, spot_name = result
         buildings.setdefault(spot_id, []).append((value(row, columns, "grade"),
-                                                  building_label(row, columns, spot_name)))
+                                                  *building_names(row, columns, spot_name)))
     found = {}
-    for spot_id, pairs in buildings.items():
+    for spot_id, group in same_spot_groups(connection, list(buildings)).items():
+        pairs = labels_of([building for member in group for building in buildings[member]])
         detail = {key: "" for key in DETAIL_COLUMNS}
         detail.update(cultural_properties=properties_text(pairs), updated=source.get("updated", ""),
-                      source=credit(source), license=source["license"])
+                      source=credit(source), license=source["license"], name=source["title"])
         if has_content(detail):
             found[spot_id] = detail
     print(f"  {len(rows)} 棟のうち {len(rows) - len(unmatched)} 棟を {len(found)} か所に当てました", flush=True)
@@ -424,6 +467,8 @@ def details(row: dict, source: dict) -> dict:
         "updated": date_text(value(row, columns, "updated")) or source.get("updated", ""),
         "source": credit(source),
         "license": source["license"],
+        # 表には書かない（merge が更新日に公開元の名前を添えるのに使う）
+        "name": source["title"],
     }
 
 
@@ -433,8 +478,11 @@ def date_text(text: str) -> str:
 
 
 def credit(source: dict) -> str:
-    """画面と meta に出す出典（公開元の名前とライセンス）"""
-    return f"{source['name']}（{source['license']}）"
+    """画面と meta に出す出典（設定のクレジットと同じ「京都府「観光施設一覧」（CC BY 4.0）」の形）。
+    creditLicense が false の公開元（文化庁。ライセンスの名前がない）はライセンスを付けない"""
+    if source.get("creditLicense", True):
+        return f"{source['title']}（{source['license']}）"
+    return source["title"]
 
 
 def merge(earlier: dict, later: dict) -> dict:
@@ -450,7 +498,17 @@ def merge(earlier: dict, later: dict) -> dict:
     if used_later:
         merged["source"] = f"{earlier['source']}、{later['source']}"
         merged["license"] = f"{earlier['license']}、{later['license']}"
+        # 出典が2つになったら、更新日にどの公開元の日かを添える（文化庁の分まで京都府の日に更新したように読めないように）
+        merged["updated"] = "、".join(part for part in (dated(earlier), dated(later)) if part)
+        merged["labelled"] = True
     return merged
+
+
+def dated(detail: dict) -> str:
+    """更新日に公開元の名前を添えたもの（「京都府「観光施設一覧」2021-04-01」）。更新日がなければ空。添え済みならそのまま"""
+    if not detail["updated"] or detail.get("labelled"):
+        return detail["updated"]
+    return f"{detail['name']}{detail['updated']}"
 
 
 DETAIL_COLUMNS = ("description", "days", "hours", "fee", "address", "phone", "url", "access", "parking",
