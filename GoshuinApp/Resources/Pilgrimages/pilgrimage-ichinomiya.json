@@ -1,0 +1,1195 @@
+{
+ "id": "ichinomiya",
+ "title": "全国一の宮",
+ "category": "神社",
+ "selectedBy": "律令制の旧国ごとの一の宮",
+ "spots": [
+  {
+   "id": "Q700448",
+   "number": 1,
+   "name": "賀茂別雷神社",
+   "aliases": [
+    "上賀茂社",
+    "上賀茂神社",
+    "山城国一宮"
+   ],
+   "prefecture": "京都府",
+   "province": "山城国",
+   "latitude": 35.06027778,
+   "longitude": 135.75277778
+  },
+  {
+   "id": "Q701620",
+   "number": 1,
+   "name": "賀茂御祖神社",
+   "aliases": [
+    "下賀茂神社",
+    "下鴨社",
+    "下鴨神社",
+    "山城国一宮"
+   ],
+   "prefecture": "京都府",
+   "province": "山城国",
+   "latitude": 35.03888889,
+   "longitude": 135.7725
+  },
+  {
+   "id": "Q705542",
+   "number": 2,
+   "name": "大神神社",
+   "aliases": [
+    "三輪明神",
+    "大和国一宮",
+    "大神大物主神社",
+    "檜原神社",
+    "美和乃御諸宮"
+   ],
+   "prefecture": "奈良県",
+   "province": "大和国",
+   "latitude": 34.52875,
+   "longitude": 135.853
+  },
+  {
+   "id": "Q32422",
+   "number": 3,
+   "name": "枚岡神社",
+   "aliases": [
+    "河内国一宮"
+   ],
+   "prefecture": "大阪府",
+   "province": "河内国",
+   "latitude": 34.67,
+   "longitude": 135.65111111
+  },
+  {
+   "id": "Q705151",
+   "number": 4,
+   "name": "大鳥大社",
+   "aliases": [
+    "おおとりたいしゃ",
+    "和泉国一宮",
+    "大鳥大明神",
+    "大鳥大神宮",
+    "大鳥神社",
+    "鳳大社"
+   ],
+   "prefecture": "大阪府",
+   "province": "和泉国",
+   "latitude": 34.53686111,
+   "longitude": 135.46075
+  },
+  {
+   "id": "Q705949",
+   "number": 5,
+   "name": "住吉大社",
+   "aliases": [
+    "すみよしたいしゃ",
+    "住吉さん",
+    "住吉坐神社",
+    "住吉坐神社 四座",
+    "大依羅神社",
+    "摂津国一宮"
+   ],
+   "prefecture": "大阪府",
+   "province": "摂津国",
+   "latitude": 34.61238889,
+   "longitude": 135.49377778
+  },
+  {
+   "id": "Q11499487",
+   "number": 6,
+   "name": "敢国神社",
+   "aliases": [
+    "伊賀国一宮",
+    "敢國神社"
+   ],
+   "prefecture": "三重県",
+   "province": "伊賀国",
+   "latitude": 34.78736667,
+   "longitude": 136.16393889
+  },
+  {
+   "id": "Q3541617",
+   "number": 7,
+   "name": "椿大神社",
+   "aliases": [
+    "伊勢国一宮",
+    "猿田彦大本宮"
+   ],
+   "prefecture": "三重県",
+   "province": "伊勢国",
+   "latitude": 34.96444444,
+   "longitude": 136.45166667
+  },
+  {
+   "id": "Q10885171",
+   "number": 8,
+   "name": "伊雑宮",
+   "aliases": [
+    "伊佐波止美命",
+    "伊雑神社",
+    "伊雜宮",
+    "志摩国一宮",
+    "玉柱屋比売命",
+    "磯部の宮"
+   ],
+   "prefecture": "三重県",
+   "province": "志摩国",
+   "latitude": 34.38027778,
+   "longitude": 136.80888889
+  },
+  {
+   "id": "Q705916",
+   "number": 9,
+   "name": "真清田神社",
+   "aliases": [
+    "尾張国一宮",
+    "眞清田神社",
+    "真墨田神社"
+   ],
+   "prefecture": "愛知県",
+   "province": "尾張国",
+   "latitude": 35.30755556,
+   "longitude": 136.80208611
+  },
+  {
+   "id": "Q3530344",
+   "number": 10,
+   "name": "砥鹿神社",
+   "aliases": [
+    "とがじんじゃ",
+    "三河国一宮"
+   ],
+   "prefecture": "愛知県",
+   "province": "三河国",
+   "latitude": 34.84763889,
+   "longitude": 137.42119444
+  },
+  {
+   "id": "Q11371148",
+   "number": 11,
+   "name": "事任八幡宮",
+   "aliases": [
+    "(論社)事任八幡宮",
+    "事任八幡宮例大祭",
+    "己等乃麻知神社",
+    "遠江国一宮"
+   ],
+   "prefecture": "静岡県",
+   "province": "遠江国",
+   "latitude": 34.79838889,
+   "longitude": 138.07541667
+  },
+  {
+   "id": "Q421597",
+   "number": 11,
+   "name": "小国神社",
+   "aliases": [
+    "小國神社",
+    "遠江国一宮"
+   ],
+   "prefecture": "静岡県",
+   "province": "遠江国",
+   "latitude": 34.8475,
+   "longitude": 137.89916667
+  },
+  {
+   "id": "Q653180",
+   "number": 12,
+   "name": "富士山本宮浅間大社",
+   "aliases": [
+    "ふじさんほんぐうせんげんたいしゃ",
+    "富士山本宮浅間神社",
+    "富士山本宮淺間大社",
+    "浅間大社",
+    "浅間神社"
+   ],
+   "prefecture": "静岡県",
+   "province": "駿河国",
+   "latitude": 35.22740556,
+   "longitude": 138.61000278
+  },
+  {
+   "id": "Q650772",
+   "number": 13,
+   "name": "三嶋大社",
+   "aliases": [
+    "三島大社",
+    "三嶋大明神",
+    "三嶋明神",
+    "伊豆三島神社",
+    "伊豆国一宮",
+    "伊豆国総社"
+   ],
+   "prefecture": "静岡県",
+   "province": "伊豆国",
+   "latitude": 35.12240556,
+   "longitude": 138.91883056
+  },
+  {
+   "id": "Q11557476",
+   "number": 14,
+   "name": "浅間神社",
+   "aliases": [
+    "(論社)浅間神社",
+    "一宮浅間神社",
+    "甲斐国一宮",
+    "甲斐國一宮淺間神社"
+   ],
+   "prefecture": "山梨県",
+   "province": "甲斐国",
+   "latitude": 35.64775833,
+   "longitude": 138.69744167
+  },
+  {
+   "id": "Q48744",
+   "number": 15,
+   "name": "寒川神社",
+   "aliases": [
+    "寒川大明神",
+    "寒川比古命",
+    "寒川比女命",
+    "相模國一之宮"
+   ],
+   "prefecture": "神奈川県",
+   "province": "相模国",
+   "latitude": 35.37963889,
+   "longitude": 139.38333333
+  },
+  {
+   "id": "Q11464224",
+   "number": 16,
+   "name": "小野神社",
+   "aliases": [
+    "小野神社（武蔵国一之宮）",
+    "武蔵国一宮"
+   ],
+   "prefecture": "東京都",
+   "province": "武蔵国",
+   "latitude": 35.65300277777778,
+   "longitude": 139.44227222222221
+  },
+  {
+   "id": "Q703633",
+   "number": 16,
+   "name": "氷川神社",
+   "aliases": [
+    "大宮氷川神社",
+    "武蔵一宮氷川神社",
+    "氷川大社"
+   ],
+   "prefecture": "埼玉県",
+   "province": "武蔵国",
+   "latitude": 35.91675,
+   "longitude": 139.62973333
+  },
+  {
+   "id": "Q705547",
+   "number": 17,
+   "name": "安房神社",
+   "aliases": [
+    "あわじんじゃ",
+    "安房国一宮",
+    "安房坐神社"
+   ],
+   "prefecture": "千葉県",
+   "province": "安房国",
+   "latitude": 34.92244444,
+   "longitude": 139.83673611
+  },
+  {
+   "id": "Q564302",
+   "number": 18,
+   "name": "玉前神社",
+   "aliases": [
+    "たまさきじんじゃ",
+    "上総一宮",
+    "上総国一宮"
+   ],
+   "prefecture": "千葉県",
+   "province": "上総国",
+   "latitude": 35.37609722,
+   "longitude": 140.36048333
+  },
+  {
+   "id": "Q372380",
+   "number": 19,
+   "name": "香取神宮",
+   "aliases": [
+    "かとりじんぐう",
+    "下総国一宮"
+   ],
+   "prefecture": "千葉県",
+   "province": "下総国",
+   "latitude": 35.88611944,
+   "longitude": 140.52868611
+  },
+  {
+   "id": "Q706499",
+   "number": 20,
+   "name": "鹿島神宮",
+   "aliases": [
+    "かしまじんぐう",
+    "護国院",
+    "鹿島社"
+   ],
+   "prefecture": "茨城県",
+   "province": "常陸国",
+   "latitude": 35.96885556,
+   "longitude": 140.63149167
+  },
+  {
+   "id": "Q403338",
+   "number": 21,
+   "name": "建部大社",
+   "aliases": [
+    "たけべたいしゃ",
+    "建部神社",
+    "近江国一宮"
+   ],
+   "prefecture": "滋賀県",
+   "province": "近江国",
+   "latitude": 34.9735,
+   "longitude": 135.91350556
+  },
+  {
+   "id": "Q704967",
+   "number": 22,
+   "name": "南宮大社",
+   "aliases": [
+    "なんぐうたいしゃ",
+    "仲山金山彦神社",
+    "南宮神社",
+    "美濃国一宮"
+   ],
+   "prefecture": "岐阜県",
+   "province": "美濃国",
+   "latitude": 35.36097222,
+   "longitude": 136.52530556
+  },
+  {
+   "id": "Q704865",
+   "number": 23,
+   "name": "飛騨一宮水無神社",
+   "aliases": [
+    "ひだいちのみやみなしじんじゃ",
+    "水無神社"
+   ],
+   "prefecture": "岐阜県",
+   "province": "飛騨国",
+   "latitude": 36.08530556,
+   "longitude": 137.25186111
+  },
+  {
+   "id": "Q218813",
+   "number": 24,
+   "name": "諏訪大社",
+   "aliases": [
+    "すわたいしゃ",
+    "元朝の蛙狩り",
+    "南方刀美神社"
+   ],
+   "prefecture": "長野県",
+   "province": "信濃国",
+   "latitude": 35.99815833,
+   "longitude": 138.11946944
+  },
+  {
+   "id": "Q10863796",
+   "number": 25,
+   "name": "一之宮貫前神社",
+   "aliases": [
+    "上野国一宮",
+    "抜鉾神社",
+    "貫前神社"
+   ],
+   "prefecture": "群馬県",
+   "province": "上野国",
+   "latitude": 36.25515278,
+   "longitude": 138.85765278
+  },
+  {
+   "id": "Q10946254",
+   "number": 26,
+   "name": "二荒山神社",
+   "aliases": [
+    "うつのみやふたあらやまじんじゃ",
+    "おたりや",
+    "二荒山神社（宇都宮）",
+    "宇都宮二荒山神社",
+    "宇都宮大明神"
+   ],
+   "prefecture": "栃木県",
+   "province": "下野国",
+   "latitude": 36.56269444,
+   "longitude": 139.88569444
+  },
+  {
+   "id": "Q133753",
+   "number": 27,
+   "name": "鹽竈神社",
+   "aliases": [
+    "塩竃神社",
+    "塩竈明神",
+    "塩竈神社",
+    "塩釜神社",
+    "志波彦神社",
+    "志波彦神社・鹽竈神社",
+    "志波彦神社鹽竈神社",
+    "陸奥国一宮",
+    "鹽竃神社",
+    "鹽竈桜"
+   ],
+   "prefecture": "宮城県",
+   "province": "陸奥国",
+   "latitude": 38.31875,
+   "longitude": 141.01255555555556
+  },
+  {
+   "id": "Q11173679",
+   "number": 28,
+   "name": "鳥海山大物忌神社",
+   "aliases": [
+    "ちょうかいさんおおものいみじんじゃ",
+    "出羽国一宮",
+    "大物忌神社"
+   ],
+   "prefecture": "山形県",
+   "province": "出羽国",
+   "latitude": 39.075,
+   "longitude": 139.87888889
+  },
+  {
+   "id": "Q11616630",
+   "number": 29,
+   "name": "若狭彦神社",
+   "aliases": [
+    "お水送り",
+    "わかさひこじんじゃ",
+    "若狭姫神社",
+    "若狭比古神社",
+    "若狭比売神社"
+   ],
+   "prefecture": "福井県",
+   "province": "若狭国",
+   "latitude": 35.466083,
+   "longitude": 135.778472
+  },
+  {
+   "id": "Q11129346",
+   "number": 30,
+   "name": "氣比神宮",
+   "aliases": [
+    "けひじんぐう",
+    "気比大神",
+    "気比神宮",
+    "気比神社",
+    "気比神社 七座",
+    "越前国一宮"
+   ],
+   "prefecture": "福井県",
+   "province": "越前国",
+   "latitude": 35.65495833,
+   "longitude": 136.0747
+  },
+  {
+   "id": "Q704702",
+   "number": 31,
+   "name": "白山比咩神社",
+   "aliases": [
+    "Unnamed candidate 1",
+    "しらやまひめじんじゃ",
+    "加賀一の宮",
+    "加賀国一宮",
+    "白山さん",
+    "白山本宮",
+    "白山権現",
+    "白山比め神社"
+   ],
+   "prefecture": "石川県",
+   "province": "加賀国",
+   "latitude": 36.43488889,
+   "longitude": 136.6362
+  },
+  {
+   "id": "Q11129340",
+   "number": 32,
+   "name": "氣多大社",
+   "aliases": [
+    "けたたいしゃ",
+    "気多大社",
+    "気多神社"
+   ],
+   "prefecture": "石川県",
+   "province": "能登国",
+   "latitude": 36.92600833,
+   "longitude": 136.76744167
+  },
+  {
+   "id": "Q11458557",
+   "number": 33,
+   "name": "射水神社",
+   "aliases": [
+    "越中総鎮守射水神社"
+   ],
+   "prefecture": "富山県",
+   "province": "越中国",
+   "latitude": 36.74852778,
+   "longitude": 137.02133333
+  },
+  {
+   "id": "Q11548073",
+   "number": 33,
+   "name": "気多神社",
+   "aliases": [
+    "氣多神社"
+   ],
+   "prefecture": "富山県",
+   "province": "越中国",
+   "latitude": 36.80022222,
+   "longitude": 137.04430556
+  },
+  {
+   "id": "Q11659204",
+   "number": 33,
+   "name": "雄山神社",
+   "aliases": [
+    "立山権現",
+    "越中国一宮",
+    "雄山権現"
+   ],
+   "prefecture": "富山県",
+   "province": "越中国",
+   "latitude": 36.573178,
+   "longitude": 137.617919
+  },
+  {
+   "id": "Q3791906",
+   "number": 33,
+   "name": "高瀬神社",
+   "aliases": [
+    "髙瀬神社"
+   ],
+   "prefecture": "富山県",
+   "province": "越中国",
+   "latitude": 36.57186111,
+   "longitude": 136.94825
+  },
+  {
+   "id": "Q172417",
+   "number": 34,
+   "name": "居多神社",
+   "aliases": [
+    "越後国一宮"
+   ],
+   "prefecture": "新潟県",
+   "province": "越後国",
+   "latitude": 37.16643889,
+   "longitude": 138.22316944
+  },
+  {
+   "id": "Q195684",
+   "number": 34,
+   "name": "彌彦神社",
+   "aliases": [
+    "いやひこじんじゃ",
+    "弥彦神社",
+    "越後国一宮"
+   ],
+   "prefecture": "新潟県",
+   "province": "越後国",
+   "latitude": 37.70669444,
+   "longitude": 138.826
+  },
+  {
+   "id": "Q172382",
+   "number": 35,
+   "name": "度津神社",
+   "aliases": [
+    "佐渡国一宮"
+   ],
+   "prefecture": "新潟県",
+   "province": "佐渡国",
+   "latitude": 37.86025,
+   "longitude": 138.33063889
+  },
+  {
+   "id": "Q10896675",
+   "number": 36,
+   "name": "出雲大神宮",
+   "aliases": [
+    "いずもだいじんぐう",
+    "丹波国一宮",
+    "元出雲",
+    "出雲神社",
+    "千年宮",
+    "大八洲国国祖神社"
+   ],
+   "prefecture": "京都府",
+   "province": "丹波国",
+   "latitude": 35.05940556,
+   "longitude": 135.57841111
+  },
+  {
+   "id": "Q705126",
+   "number": 37,
+   "name": "籠神社",
+   "aliases": [
+    "このじんじゃ",
+    "丹後国一宮",
+    "元伊勢籠神社",
+    "篭神社"
+   ],
+   "prefecture": "京都府",
+   "province": "丹後国",
+   "latitude": 35.58281389,
+   "longitude": 135.19666944
+  },
+  {
+   "id": "Q3156511",
+   "number": 38,
+   "name": "出石神社",
+   "aliases": [
+    "伊豆志坐神社"
+   ],
+   "prefecture": "兵庫県",
+   "province": "但馬国",
+   "latitude": 35.48194444,
+   "longitude": 134.87028611
+  },
+  {
+   "id": "Q246447",
+   "number": 39,
+   "name": "宇倍神社",
+   "aliases": [
+    "因幡国一宮"
+   ],
+   "prefecture": "鳥取県",
+   "province": "因幡国",
+   "latitude": 35.48083333,
+   "longitude": 134.26888889
+  },
+  {
+   "id": "Q245734",
+   "number": 40,
+   "name": "倭文神社",
+   "aliases": [
+    "一ノ宮倭文神社",
+    "伯耆国一宮"
+   ],
+   "prefecture": "鳥取県",
+   "province": "伯耆国",
+   "latitude": 35.49037222,
+   "longitude": 133.90296667
+  },
+  {
+   "id": "Q696362",
+   "number": 41,
+   "name": "出雲大社",
+   "aliases": [
+    "出雲国一宮",
+    "杵築大社"
+   ],
+   "prefecture": "島根県",
+   "province": "出雲国",
+   "latitude": 35.40194444,
+   "longitude": 132.68544444
+  },
+  {
+   "id": "Q11570699",
+   "number": 42,
+   "name": "物部神社",
+   "aliases": [
+    "石見国一宮"
+   ],
+   "prefecture": "島根県",
+   "province": "石見国",
+   "latitude": 35.155,
+   "longitude": 132.51347222
+  },
+  {
+   "id": "Q11549109",
+   "number": 43,
+   "name": "水若酢神社",
+   "aliases": [
+    "水若酢命神社",
+    "隠岐国一宮"
+   ],
+   "prefecture": "島根県",
+   "province": "隠岐国",
+   "latitude": 36.28021667,
+   "longitude": 133.24903889
+  },
+  {
+   "id": "Q65320",
+   "number": 44,
+   "name": "伊和神社",
+   "aliases": [
+    "伊和坐大名持御魂神社",
+    "伊和坐大名持魂神社",
+    "播磨国一宮"
+   ],
+   "prefecture": "兵庫県",
+   "province": "播磨国",
+   "latitude": 35.08752778,
+   "longitude": 134.58647222
+  },
+  {
+   "id": "Q11364246",
+   "number": 45,
+   "name": "中山神社",
+   "aliases": [
+    "中山神社 (津山市)",
+    "仲山大明神",
+    "南宮",
+    "美作国一宮"
+   ],
+   "prefecture": "岡山県",
+   "province": "美作国",
+   "latitude": 35.10019444,
+   "longitude": 133.99458333
+  },
+  {
+   "id": "Q500763",
+   "number": 46,
+   "name": "吉備津彦神社",
+   "aliases": [
+    "きびつひこじんじゃ",
+    "備前国一宮",
+    "朝日の宮"
+   ],
+   "prefecture": "岡山県",
+   "province": "備前国",
+   "latitude": 34.67675278,
+   "longitude": 133.86383333
+  },
+  {
+   "id": "Q712824",
+   "number": 47,
+   "name": "吉備津神社",
+   "aliases": [
+    "きびつじんじゃ",
+    "備中国一宮",
+    "吉備津彦神社"
+   ],
+   "prefecture": "岡山県",
+   "province": "備中国",
+   "latitude": 34.67066667,
+   "longitude": 133.85061111
+  },
+  {
+   "id": "Q6404042",
+   "number": 48,
+   "name": "吉備津神社",
+   "aliases": [
+    "一宮さん",
+    "備後一宮吉備津神社",
+    "備後吉備津神社",
+    "備後国一宮",
+    "吉備津神社 (備後国)"
+   ],
+   "prefecture": "広島県",
+   "province": "備後国",
+   "latitude": 34.56933611,
+   "longitude": 133.27106944
+  },
+  {
+   "id": "Q191763",
+   "number": 49,
+   "name": "厳島神社",
+   "aliases": [
+    "伊都伎島神社",
+    "厳島社",
+    "厳嶋神社",
+    "嚴島神社",
+    "安芸国一宮",
+    "巌島神社"
+   ],
+   "prefecture": "広島県",
+   "province": "安芸国",
+   "latitude": 34.29602222,
+   "longitude": 132.31989444
+  },
+  {
+   "id": "Q11572731",
+   "number": 50,
+   "name": "玉祖神社",
+   "aliases": [
+    "たまのおやじんじゃ",
+    "周防国一宮"
+   ],
+   "prefecture": "山口県",
+   "province": "周防国",
+   "latitude": 34.05770833,
+   "longitude": 131.53365278
+  },
+  {
+   "id": "Q11381858",
+   "number": 51,
+   "name": "住吉神社",
+   "aliases": [
+    "住吉坐荒御魂神社",
+    "長門国一宮"
+   ],
+   "prefecture": "山口県",
+   "province": "長門国",
+   "latitude": 33.99961111,
+   "longitude": 130.95655556
+  },
+  {
+   "id": "Q705154",
+   "number": 52,
+   "name": "丹生都比売神社",
+   "aliases": [
+    "にうつひめじんじゃ、にふつひめじんじゃ",
+    "丹生都比女神社",
+    "丹生都比賣神社",
+    "天野四所明神",
+    "天野大社",
+    "紀伊国一宮"
+   ],
+   "prefecture": "和歌山県",
+   "province": "紀伊国",
+   "latitude": 34.26272222,
+   "longitude": 135.522
+  },
+  {
+   "id": "Q11379271",
+   "number": 52,
+   "name": "伊太祁󠄀曽神社",
+   "aliases": [
+    "伊太祁曽神社",
+    "伊太祁曾神社"
+   ],
+   "prefecture": "和歌山県",
+   "province": "紀伊国",
+   "latitude": 34.20169444,
+   "longitude": 135.25
+  },
+  {
+   "id": "Q888184",
+   "number": 52,
+   "name": "日前神宮・國懸神宮",
+   "aliases": [
+    "ひのくまじんぐう・くにかかすじんぐう",
+    "中言神社",
+    "国懸神宮",
+    "国懸神社",
+    "國懸大神",
+    "國懸神宮",
+    "日前・国懸神宮",
+    "日前・國懸神宮",
+    "日前国懸神宮",
+    "日前國懸神宮",
+    "日前大神",
+    "日前宮",
+    "日前神宮",
+    "日前神宮・国懸神宮",
+    "日前神社",
+    "紀伊国一宮"
+   ],
+   "prefecture": "和歌山県",
+   "province": "紀伊国",
+   "latitude": 34.22888889,
+   "longitude": 135.20222222
+  },
+  {
+   "id": "Q10884977",
+   "number": 53,
+   "name": "伊弉諾神宮",
+   "aliases": [
+    "一宮さん",
+    "伊弉諾さん",
+    "淡路伊佐奈伎神社",
+    "淡路国一宮",
+    "淡路農林水産祭"
+   ],
+   "prefecture": "兵庫県",
+   "province": "淡路国",
+   "latitude": 34.46,
+   "longitude": 134.85222222
+  },
+  {
+   "id": "Q11352598",
+   "number": 54,
+   "name": "一宮神社",
+   "prefecture": "徳島県",
+   "province": "阿波国",
+   "latitude": 34.03780556,
+   "longitude": 134.46263889
+  },
+  {
+   "id": "Q11358379",
+   "number": 54,
+   "name": "上一宮大粟神社",
+   "aliases": [
+    "上一之宮大粟神社"
+   ],
+   "prefecture": "徳島県",
+   "province": "阿波国",
+   "latitude": 33.971,
+   "longitude": 134.36694444
+  },
+  {
+   "id": "Q11390577",
+   "number": 54,
+   "name": "八倉比売神社",
+   "aliases": [
+    "八倉比賣神社",
+    "天石門別八倉比売神社"
+   ],
+   "prefecture": "徳島県",
+   "province": "阿波国",
+   "latitude": 34.05578056,
+   "longitude": 134.46495833
+  },
+  {
+   "id": "Q723417",
+   "number": 54,
+   "name": "大麻比古神社",
+   "aliases": [
+    "大麻さん",
+    "阿波国一宮"
+   ],
+   "prefecture": "徳島県",
+   "province": "阿波国",
+   "latitude": 34.17092778,
+   "longitude": 134.50256667
+  },
+  {
+   "id": "Q11576978",
+   "number": 55,
+   "name": "田村神社",
+   "aliases": [
+    "たむらじんじゃ",
+    "一宮大明神",
+    "一宮神社",
+    "定水大明神",
+    "田村大明神",
+    "田村大社",
+    "田村神社 (讃岐国)",
+    "田村神社 (香川県)",
+    "讃岐国一宮"
+   ],
+   "prefecture": "香川県",
+   "province": "讃岐国",
+   "latitude": 34.28652778,
+   "longitude": 134.02727778
+  },
+  {
+   "id": "Q703904",
+   "number": 56,
+   "name": "大山祇神社",
+   "aliases": [
+    "おおやまずみじんじゃ",
+    "伊予国一宮",
+    "大山祗神社",
+    "大山積神社"
+   ],
+   "prefecture": "愛媛県",
+   "province": "伊予国",
+   "latitude": 34.24788889,
+   "longitude": 133.00580556
+  },
+  {
+   "id": "Q704890",
+   "number": 57,
+   "name": "土佐神社",
+   "aliases": [
+    "とさじんじゃ",
+    "土佐一宮",
+    "土佐一宮神社",
+    "土佐国一宮",
+    "土佐国総鎮守",
+    "土佐大神",
+    "都佐坐神社"
+   ],
+   "prefecture": "高知県",
+   "province": "土佐国",
+   "latitude": 33.59262222,
+   "longitude": 133.57701389
+  },
+  {
+   "id": "Q29682",
+   "number": 58,
+   "name": "住吉神社",
+   "aliases": [
+    "すみよしじんじゃ",
+    "筑前国一宮"
+   ],
+   "prefecture": "福岡県",
+   "province": "筑前国",
+   "latitude": 33.58575,
+   "longitude": 130.41375
+  },
+  {
+   "id": "Q715647",
+   "number": 59,
+   "name": "高良大社",
+   "aliases": [
+    "こうらたいしゃ",
+    "高良玉垂命",
+    "高良玉垂命神社"
+   ],
+   "prefecture": "福岡県",
+   "province": "筑後国",
+   "latitude": 33.30161111,
+   "longitude": 130.56588889
+  },
+  {
+   "id": "Q715632",
+   "number": 60,
+   "name": "宇佐神宮",
+   "aliases": [
+    "うさじんぐう",
+    "八幡大菩薩宇佐宮",
+    "宇佐八幡",
+    "宇佐八幡宮",
+    "宇佐八幡神",
+    "豊前国一宮"
+   ],
+   "prefecture": "大分県",
+   "province": "豊前国",
+   "latitude": 33.52347222,
+   "longitude": 131.37716667
+  },
+  {
+   "id": "Q195715",
+   "number": 61,
+   "name": "柞原八幡宮",
+   "aliases": [
+    "由原八幡宮"
+   ],
+   "prefecture": "大分県",
+   "province": "豊後国",
+   "latitude": 33.23838889,
+   "longitude": 131.551
+  },
+  {
+   "id": "Q11405620",
+   "number": 62,
+   "name": "千栗八幡宮",
+   "prefecture": "佐賀県",
+   "province": "肥前国",
+   "latitude": 33.33141667,
+   "longitude": 130.47872222
+  },
+  {
+   "id": "Q11613317",
+   "number": 62,
+   "name": "與止日女神社",
+   "aliases": [
+    "与止日女神社"
+   ],
+   "prefecture": "佐賀県",
+   "province": "肥前国",
+   "latitude": 33.32630556,
+   "longitude": 130.26833333
+  },
+  {
+   "id": "Q715639",
+   "number": 63,
+   "name": "阿蘇神社",
+   "aliases": [
+    "あそじんじゃ",
+    "建磐龍命神社",
+    "肥後国一宮",
+    "阿蘓神社"
+   ],
+   "prefecture": "熊本県",
+   "province": "肥後国",
+   "latitude": 32.94777778,
+   "longitude": 131.11597222
+  },
+  {
+   "id": "Q3541675",
+   "number": 64,
+   "name": "都農神社",
+   "aliases": [
+    "一の宮神社",
+    "宮崎宮",
+    "宮崎社",
+    "日向国一宮"
+   ],
+   "prefecture": "宮崎県",
+   "province": "日向国",
+   "latitude": 32.26311111,
+   "longitude": 131.55866667
+  },
+  {
+   "id": "Q704695",
+   "number": 65,
+   "name": "鹿児島神宮",
+   "aliases": [
+    "かごしまじんぐう",
+    "国分八幡宮",
+    "大隅国一宮",
+    "大隅正八幡宮",
+    "鹿児島神社",
+    "鹿兒島神宮"
+   ],
+   "prefecture": "鹿児島県",
+   "province": "大隅国",
+   "latitude": 31.75371389,
+   "longitude": 130.73786111
+  },
+  {
+   "id": "Q11503757",
+   "number": 66,
+   "name": "新田神社",
+   "prefecture": "鹿児島県",
+   "province": "薩摩国",
+   "latitude": 31.82763889,
+   "longitude": 130.29266667
+  },
+  {
+   "id": "Q3136198",
+   "number": 66,
+   "name": "枚聞神社",
+   "aliases": [
+    "薩摩国一宮"
+   ],
+   "prefecture": "鹿児島県",
+   "province": "薩摩国",
+   "latitude": 31.20763889,
+   "longitude": 130.53961111
+  },
+  {
+   "id": "Q11613437",
+   "number": 67,
+   "name": "興神社",
+   "aliases": [
+    "（論社B）興神社"
+   ],
+   "prefecture": "長崎県",
+   "province": "壱岐国",
+   "latitude": 33.76980556,
+   "longitude": 129.73172222
+  },
+  {
+   "id": "Q11410120",
+   "number": 68,
+   "name": "厳原八幡宮神社",
+   "aliases": [
+    "八幡宮神社",
+    "厳原八幡宮"
+   ],
+   "prefecture": "長崎県",
+   "province": "対馬国",
+   "latitude": 34.2065,
+   "longitude": 129.28925
+  },
+  {
+   "id": "Q11559099",
+   "number": 68,
+   "name": "海神神社",
+   "aliases": [
+    "木坂海神神社"
+   ],
+   "prefecture": "長崎県",
+   "province": "対馬国",
+   "latitude": 34.46425,
+   "longitude": 129.28333333
+  }
+ ]
+}

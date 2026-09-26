@@ -1,0 +1,390 @@
+{
+ "id": "saigoku33",
+ "title": "西国三十三所",
+ "category": "寺院",
+ "selectedBy": "西国三十三所札所会",
+ "spots": [
+  {
+   "id": "Q1476235",
+   "number": 1,
+   "name": "青岸渡寺",
+   "aliases": [
+    "那智山",
+    "那智山寺",
+    "那智山青岸渡寺"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 33.66913888888889,
+   "longitude": 135.88986111111112
+  },
+  {
+   "id": "Q11153117",
+   "number": 2,
+   "name": "紀三井寺",
+   "aliases": [
+    "紀三井山金剛宝寺護国院",
+    "金剛宝寺"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 34.18516666666666,
+   "longitude": 135.19002777777777
+  },
+  {
+   "id": "Q5358314",
+   "number": 3,
+   "name": "粉河寺",
+   "prefecture": "和歌山県",
+   "latitude": 34.28097222222222,
+   "longitude": 135.40591666666668
+  },
+  {
+   "id": "Q11504416",
+   "number": 4,
+   "name": "施福寺",
+   "aliases": [
+    "槇尾寺",
+    "槙尾寺"
+   ],
+   "prefecture": "大阪府",
+   "latitude": 34.392916666666665,
+   "longitude": 135.51158333333333
+  },
+  {
+   "id": "Q6406788",
+   "number": 5,
+   "name": "葛井寺",
+   "aliases": [
+    "藤井寺"
+   ],
+   "prefecture": "大阪府",
+   "latitude": 34.57016666666667,
+   "longitude": 135.59661111111112
+  },
+  {
+   "id": "Q11408073",
+   "number": 6,
+   "name": "南法華寺",
+   "aliases": [
+    "壷坂寺",
+    "壷阪寺",
+    "壷阪山",
+    "壺坂寺",
+    "壺阪寺",
+    "壺阪山"
+   ],
+   "prefecture": "奈良県",
+   "latitude": 34.42655555555555,
+   "longitude": 135.8102777777778
+  },
+  {
+   "id": "Q3349998",
+   "number": 7,
+   "name": "岡寺",
+   "aliases": [
+    "龍蓋寺"
+   ],
+   "prefecture": "奈良県",
+   "latitude": 34.471805555555555,
+   "longitude": 135.82833333333332
+  },
+  {
+   "id": "Q1457787",
+   "number": 8,
+   "name": "長谷寺",
+   "aliases": [
+    "初瀬寺"
+   ],
+   "prefecture": "奈良県",
+   "latitude": 34.535888888888884,
+   "longitude": 135.90683333333334
+  },
+  {
+   "id": "Q1070863",
+   "number": 9,
+   "name": "興福寺",
+   "aliases": [
+    "興福寺（南円堂）"
+   ],
+   "prefecture": "奈良県",
+   "latitude": 34.6825,
+   "longitude": 135.83027777777778
+  },
+  {
+   "id": "Q11355140",
+   "number": 10,
+   "name": "三室戸寺",
+   "aliases": [
+    "御室戸寺"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.9005,
+   "longitude": 135.81916666666666
+  },
+  {
+   "id": "Q1157535",
+   "number": 11,
+   "name": "醍醐寺",
+   "aliases": [
+    "上醍醐寺",
+    "五大力さん",
+    "醍醐寺（上醍醐・准胝堂）"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.95111111111111,
+   "longitude": 135.8241111111111
+  },
+  {
+   "id": "Q11545558",
+   "number": 12,
+   "name": "正法寺",
+   "aliases": [
+    "岩間寺",
+    "岩間山正法寺"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 34.93288888888889,
+   "longitude": 135.87875
+  },
+  {
+   "id": "Q1082791",
+   "number": 13,
+   "name": "石山寺",
+   "prefecture": "滋賀県",
+   "latitude": 34.96041666666667,
+   "longitude": 135.9056388888889
+  },
+  {
+   "id": "Q1756307",
+   "number": 14,
+   "name": "園城寺",
+   "aliases": [
+    "三井寺",
+    "園城寺（観音堂）"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.010333333333335,
+   "longitude": 135.855
+  },
+  {
+   "id": "Q11630596",
+   "number": 15,
+   "name": "今熊野観音寺",
+   "aliases": [
+    "今熊野",
+    "観音寺"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.97977777777778,
+   "longitude": 135.78125
+  },
+  {
+   "id": "Q221716",
+   "number": 16,
+   "name": "清水寺",
+   "aliases": [
+    "清水観音"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.99483333333333,
+   "longitude": 135.785
+  },
+  {
+   "id": "Q1060771",
+   "number": 17,
+   "name": "六波羅蜜寺",
+   "aliases": [
+    "style=\"white-space:nowrap;\" |六波羅蜜寺",
+    "六はらさん",
+    "補陀洛山六波羅蜜寺"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.99711111111111,
+   "longitude": 135.77333333333334
+  },
+  {
+   "id": "Q599378",
+   "number": 18,
+   "name": "頂法寺",
+   "aliases": [
+    "六角堂",
+    "紫雲山"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.007666666666665,
+   "longitude": 135.76025
+  },
+  {
+   "id": "Q10919351",
+   "number": 19,
+   "name": "行願寺",
+   "aliases": [
+    "革堂"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.016194444444444,
+   "longitude": 135.76772222222223
+  },
+  {
+   "id": "Q169621",
+   "number": 20,
+   "name": "善峯寺",
+   "aliases": [
+    "よしみねさん",
+    "善峰寺"
+   ],
+   "prefecture": "京都府",
+   "latitude": 34.93805555555555,
+   "longitude": 135.64452777777777
+  },
+  {
+   "id": "Q4231716",
+   "number": 21,
+   "name": "穴太寺",
+   "aliases": [
+    "穴生寺",
+    "穴穂寺菩提寺"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.00666666666667,
+   "longitude": 135.54925
+  },
+  {
+   "id": "Q11607652",
+   "number": 22,
+   "name": "総持寺",
+   "aliases": [
+    "補陀洛山総持寺",
+    "補陀洛山總持寺"
+   ],
+   "prefecture": "大阪府",
+   "latitude": 34.82944444444445,
+   "longitude": 135.58124999999998
+  },
+  {
+   "id": "Q2747522",
+   "number": 23,
+   "name": "勝尾寺",
+   "aliases": [
+    "勝王寺",
+    "弥勒寺"
+   ],
+   "prefecture": "大阪府",
+   "latitude": 34.865833333333335,
+   "longitude": 135.4911111111111
+  },
+  {
+   "id": "Q3335345",
+   "number": 24,
+   "name": "中山寺",
+   "aliases": [
+    "中山観音",
+    "真言宗中山寺派"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 34.82166666666667,
+   "longitude": 135.36772222222223
+  },
+  {
+   "id": "Q11560913",
+   "number": 25,
+   "name": "清水寺",
+   "aliases": [
+    "御嶽山清水寺",
+    "播州清水寺清水さん",
+    "清水寺 (加東市)"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 34.972500000000004,
+   "longitude": 135.08183333333332
+  },
+  {
+   "id": "Q3147650",
+   "number": 26,
+   "name": "一乗寺",
+   "prefecture": "兵庫県",
+   "latitude": 34.85930555555556,
+   "longitude": 134.81902777777776
+  },
+  {
+   "id": "Q3054354",
+   "number": 27,
+   "name": "圓教寺",
+   "aliases": [
+    "円教寺",
+    "書写山円教寺",
+    "書写山圓教寺",
+    "書寫山",
+    "書寫山円教寺",
+    "書寫山圓教寺",
+    "西の比叡山"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 34.89138888888889,
+   "longitude": 134.6575
+  },
+  {
+   "id": "Q11495765",
+   "number": 28,
+   "name": "成相寺",
+   "aliases": [
+    "成相さん"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.595555555555556,
+   "longitude": 135.1875
+  },
+  {
+   "id": "Q11529611",
+   "number": 29,
+   "name": "松尾寺",
+   "aliases": [
+    "style=\"white-space:nowrap;\" |まつのおさん"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.497416666666666,
+   "longitude": 135.4693888888889
+  },
+  {
+   "id": "Q3080736",
+   "number": 30,
+   "name": "宝厳寺",
+   "aliases": [
+    "style=\"white-space:nowrap;\" |竹生島宝厳寺"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.42055555555555,
+   "longitude": 136.14374999999998
+  },
+  {
+   "id": "Q11651580",
+   "number": 31,
+   "name": "長命寺",
+   "prefecture": "滋賀県",
+   "latitude": 35.16269444444444,
+   "longitude": 136.06400000000002
+  },
+  {
+   "id": "Q11630653",
+   "number": 32,
+   "name": "観音正寺",
+   "aliases": [
+    "仏法興隆寺"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.14527777777778,
+   "longitude": 136.1602777777778
+  },
+  {
+   "id": "Q11620047",
+   "number": 33,
+   "name": "華厳寺",
+   "aliases": [
+    "たにぐみさん",
+    "谷汲山華厳寺"
+   ],
+   "prefecture": "岐阜県",
+   "latitude": 35.53722222222222,
+   "longitude": 136.60788888888888
+  }
+ ]
+}

@@ -1,2 +1,6 @@
 __pycache__/
-GoshuinApp/
+# 作った DB と JSON は入れない（札所の一覧だけは wikipedia.py が読むので入れる）
+GoshuinApp/*
+!GoshuinApp/Resources/
+GoshuinApp/Resources/*
+!GoshuinApp/Resources/Pilgrimages/

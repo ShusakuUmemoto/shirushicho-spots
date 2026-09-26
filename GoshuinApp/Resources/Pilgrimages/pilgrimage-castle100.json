@@ -1,0 +1,1146 @@
+{
+ "id": "castle100",
+ "title": "日本100名城",
+ "category": "城郭",
+ "selectedBy": "日本城郭協会",
+ "spots": [
+  {
+   "id": "Q11110966",
+   "number": 1,
+   "name": "根室半島チャシ跡群",
+   "aliases": [
+    "ねむろはんとうチャシあとぐん"
+   ],
+   "prefecture": "北海道",
+   "latitude": 43.38861111,
+   "longitude": 145.7825
+  },
+  {
+   "id": "Q1196357",
+   "number": 2,
+   "name": "五稜郭",
+   "aliases": [
+    "亀田役所土塁",
+    "五稜郭公園",
+    "五稜郭跡",
+    "柳野城"
+   ],
+   "prefecture": "北海道",
+   "latitude": 41.7969,
+   "longitude": 140.75696111
+  },
+  {
+   "id": "Q1143974",
+   "number": 3,
+   "name": "松前城",
+   "aliases": [
+    "福山城",
+    "福山城跡"
+   ],
+   "prefecture": "北海道",
+   "latitude": 41.430325,
+   "longitude": 140.1086
+  },
+  {
+   "id": "Q328582",
+   "number": 4,
+   "name": "弘前城",
+   "aliases": [
+    "鷹岡城"
+   ],
+   "prefecture": "青森県",
+   "latitude": 40.608036111111,
+   "longitude": 140.46380555556
+  },
+  {
+   "id": "Q8140388",
+   "number": 5,
+   "name": "根城",
+   "aliases": [
+    "史跡 根城の広場",
+    "史跡根城の広場"
+   ],
+   "prefecture": "青森県",
+   "latitude": 40.50618889,
+   "longitude": 141.45961111
+  },
+  {
+   "id": "Q251650",
+   "number": 6,
+   "name": "盛岡城",
+   "aliases": [
+    "不来方城"
+   ],
+   "prefecture": "岩手県",
+   "latitude": 39.69994722,
+   "longitude": 141.15011111
+  },
+  {
+   "id": "Q870867",
+   "number": 7,
+   "name": "多賀城",
+   "aliases": [
+    "多賀城跡",
+    "多賀柵"
+   ],
+   "prefecture": "宮城県",
+   "latitude": 38.3067,
+   "longitude": 140.9883
+  },
+  {
+   "id": "Q598621",
+   "number": 8,
+   "name": "仙台城",
+   "aliases": [
+    "五城楼",
+    "青葉城"
+   ],
+   "prefecture": "宮城県",
+   "latitude": 38.25247778,
+   "longitude": 140.85615556
+  },
+  {
+   "id": "Q6133648",
+   "number": 9,
+   "name": "久保田城",
+   "aliases": [
+    "久保田城跡",
+    "千秋公園"
+   ],
+   "prefecture": "秋田県",
+   "latitude": 39.723481,
+   "longitude": 140.123242
+  },
+  {
+   "id": "Q15604669",
+   "number": 10,
+   "name": "山形城",
+   "aliases": [
+    "吉字の城",
+    "吉字城",
+    "霞ヶ城",
+    "霞城"
+   ],
+   "prefecture": "山形県",
+   "latitude": 38.2556,
+   "longitude": 140.3281
+  },
+  {
+   "id": "Q593054",
+   "number": 11,
+   "name": "二本松城",
+   "aliases": [
+    "白旗城",
+    "霞ヶ城"
+   ],
+   "prefecture": "福島県",
+   "latitude": 37.599642,
+   "longitude": 140.427986
+  },
+  {
+   "id": "Q1365061",
+   "number": 12,
+   "name": "会津若松城",
+   "aliases": [
+    "会津城",
+    "会津黒川城",
+    "若松城",
+    "鶴ヶ城",
+    "鶴ヶ城公園",
+    "黒川城"
+   ],
+   "prefecture": "福島県",
+   "latitude": 37.48777778,
+   "longitude": 139.92972222
+  },
+  {
+   "id": "Q522630",
+   "number": 13,
+   "name": "白河小峰城",
+   "aliases": [
+    "白河城"
+   ],
+   "prefecture": "福島県",
+   "latitude": 37.132624,
+   "longitude": 140.213583
+  },
+  {
+   "id": "Q848997",
+   "number": 14,
+   "name": "水戸城（弘道館）",
+   "aliases": [
+    "水戸城"
+   ],
+   "prefecture": "茨城県",
+   "latitude": 36.37277778,
+   "longitude": 140.47833333
+  },
+  {
+   "id": "Q2882839",
+   "number": 15,
+   "name": "足利氏館（鑁阿寺）",
+   "aliases": [
+    "真言宗大日派",
+    "足利氏宅跡",
+    "足利氏館",
+    "鑁阿寺"
+   ],
+   "prefecture": "栃木県",
+   "latitude": 36.33752778,
+   "longitude": 139.45225
+  },
+  {
+   "id": "Q994006",
+   "number": 16,
+   "name": "箕輪城",
+   "prefecture": "群馬県",
+   "latitude": 36.40495,
+   "longitude": 138.950958
+  },
+  {
+   "id": "Q1038062",
+   "number": 17,
+   "name": "新田金山城",
+   "aliases": [
+    "にったかなやまじょう",
+    "太田金山城",
+    "金山城"
+   ],
+   "prefecture": "群馬県",
+   "latitude": 36.31777778,
+   "longitude": 139.37747222
+  },
+  {
+   "id": "Q2969388",
+   "number": 18,
+   "name": "鉢形城",
+   "aliases": [
+    "はちがたじょう"
+   ],
+   "prefecture": "埼玉県",
+   "latitude": 36.1092,
+   "longitude": 139.196
+  },
+  {
+   "id": "Q1073688",
+   "number": 19,
+   "name": "川越城",
+   "aliases": [
+    "河越城"
+   ],
+   "prefecture": "埼玉県",
+   "latitude": 35.92451389,
+   "longitude": 139.49150278
+  },
+  {
+   "id": "Q8014937",
+   "number": 20,
+   "name": "佐倉城",
+   "prefecture": "千葉県",
+   "latitude": 35.72198889,
+   "longitude": 140.21671667
+  },
+  {
+   "id": "Q865913",
+   "number": 21,
+   "name": "江戸城",
+   "aliases": [
+    "千代田城",
+    "皇居"
+   ],
+   "prefecture": "東京都",
+   "latitude": 35.688325,
+   "longitude": 139.75436667
+  },
+  {
+   "id": "Q2969389",
+   "number": 22,
+   "name": "八王子城",
+   "aliases": [
+    "八王子城合戦",
+    "八王子城址"
+   ],
+   "prefecture": "東京都",
+   "latitude": 35.65293333,
+   "longitude": 139.25211389
+  },
+  {
+   "id": "Q1013437",
+   "number": 23,
+   "name": "小田原城",
+   "prefecture": "神奈川県",
+   "latitude": 35.25083333,
+   "longitude": 139.15361111
+  },
+  {
+   "id": "Q11637200",
+   "number": 24,
+   "name": "武田氏館（武田神社）",
+   "aliases": [
+    "武田氏館",
+    "躑躅ヶ崎館"
+   ],
+   "prefecture": "山梨県",
+   "latitude": 35.68686389,
+   "longitude": 138.57747222
+  },
+  {
+   "id": "Q969909",
+   "number": 25,
+   "name": "甲府城",
+   "aliases": [
+    "甲府城跡",
+    "舞鶴城",
+    "舞鶴城公園"
+   ],
+   "prefecture": "山梨県",
+   "latitude": 35.66528889,
+   "longitude": 138.57133889
+  },
+  {
+   "id": "Q11104236",
+   "number": 26,
+   "name": "松代城",
+   "aliases": [
+    "松代城公園",
+    "松代城址",
+    "海津城"
+   ],
+   "prefecture": "長野県",
+   "latitude": 36.566,
+   "longitude": 138.196
+  },
+  {
+   "id": "Q2968344",
+   "number": 27,
+   "name": "上田城",
+   "aliases": [
+    "真田城"
+   ],
+   "prefecture": "長野県",
+   "latitude": 36.4,
+   "longitude": 138.24
+  },
+  {
+   "id": "Q1197137",
+   "number": 28,
+   "name": "小諸城",
+   "aliases": [
+    "懐古園",
+    "穴城",
+    "酔月城"
+   ],
+   "prefecture": "長野県",
+   "latitude": 36.32733611,
+   "longitude": 138.41724722
+  },
+  {
+   "id": "Q739612",
+   "number": 29,
+   "name": "松本城",
+   "aliases": [
+    "まつもとじょう",
+    "深志城",
+    "烏城"
+   ],
+   "prefecture": "長野県",
+   "latitude": 36.2391,
+   "longitude": 137.96911944
+  },
+  {
+   "id": "Q11672954",
+   "number": 30,
+   "name": "高遠城",
+   "prefecture": "長野県",
+   "latitude": 35.83307778,
+   "longitude": 138.06280278
+  },
+  {
+   "id": "Q1039103",
+   "number": 31,
+   "name": "新発田城",
+   "prefecture": "新潟県",
+   "latitude": 37.95546667,
+   "longitude": 139.32540833
+  },
+  {
+   "id": "Q1197131",
+   "number": 32,
+   "name": "春日山城",
+   "aliases": [
+    "蜂ヶ峰城"
+   ],
+   "prefecture": "新潟県",
+   "latitude": 37.147108,
+   "longitude": 138.205597
+  },
+  {
+   "id": "Q8011764",
+   "number": 33,
+   "name": "高岡城",
+   "aliases": [
+    "高岡古城公園"
+   ],
+   "prefecture": "富山県",
+   "latitude": 36.74916667,
+   "longitude": 137.02055556
+  },
+  {
+   "id": "Q8011662",
+   "number": 34,
+   "name": "七尾城",
+   "prefecture": "石川県",
+   "latitude": 37.00903611,
+   "longitude": 136.98391667
+  },
+  {
+   "id": "Q511412",
+   "number": 35,
+   "name": "金沢城",
+   "aliases": [
+    "御山御坊 (金沢城)"
+   ],
+   "prefecture": "石川県",
+   "latitude": 36.56431667,
+   "longitude": 136.65922778
+  },
+  {
+   "id": "Q1143892",
+   "number": 36,
+   "name": "丸岡城",
+   "prefecture": "福井県",
+   "latitude": 36.15242222,
+   "longitude": 136.27214444
+  },
+  {
+   "id": "Q2968274",
+   "number": 37,
+   "name": "一乗谷城",
+   "aliases": [
+    "一乗谷",
+    "一乗谷朝倉氏庭園",
+    "一乗谷朝倉氏遺跡",
+    "朝倉氏遺跡"
+   ],
+   "prefecture": "福井県",
+   "latitude": 36,
+   "longitude": 136.3
+  },
+  {
+   "id": "Q1196356",
+   "number": 38,
+   "name": "岩村城",
+   "aliases": [
+    "霧ヶ城"
+   ],
+   "prefecture": "岐阜県",
+   "latitude": 35.36033333,
+   "longitude": 137.45130556
+  },
+  {
+   "id": "Q1367052",
+   "number": 39,
+   "name": "岐阜城",
+   "aliases": [
+    "稲葉山城",
+    "金華山城"
+   ],
+   "prefecture": "岐阜県",
+   "latitude": 35.43407222,
+   "longitude": 136.78221389
+  },
+  {
+   "id": "Q8047874",
+   "number": 40,
+   "name": "山中城",
+   "prefecture": "静岡県",
+   "latitude": 35.1564,
+   "longitude": 138.992
+  },
+  {
+   "id": "Q1038629",
+   "number": 41,
+   "name": "駿府城",
+   "aliases": [
+    "府中城",
+    "静岡城",
+    "駿府城番"
+   ],
+   "prefecture": "静岡県",
+   "latitude": 34.97916667,
+   "longitude": 138.38333333
+  },
+  {
+   "id": "Q2969457",
+   "number": 42,
+   "name": "掛川城",
+   "aliases": [
+    "懸川城",
+    "懸河城",
+    "松尾城",
+    "雲霧城"
+   ],
+   "prefecture": "静岡県",
+   "latitude": 34.77541667,
+   "longitude": 138.01473333
+  },
+  {
+   "id": "Q1155484",
+   "number": 43,
+   "name": "犬山城",
+   "aliases": [
+    "白帝城"
+   ],
+   "prefecture": "愛知県",
+   "latitude": 35.38832222,
+   "longitude": 136.93926111
+  },
+  {
+   "id": "Q648629",
+   "number": 44,
+   "name": "名古屋城",
+   "aliases": [
+    "亀屋城",
+    "名城",
+    "柳城",
+    "蓬左城",
+    "金城",
+    "金鯱城"
+   ],
+   "prefecture": "愛知県",
+   "latitude": 35.18549167,
+   "longitude": 136.89908611
+  },
+  {
+   "id": "Q1013445",
+   "number": 45,
+   "name": "岡崎城",
+   "prefecture": "愛知県",
+   "latitude": 34.95638889,
+   "longitude": 137.15888889
+  },
+  {
+   "id": "Q961882",
+   "number": 46,
+   "name": "長篠城",
+   "prefecture": "愛知県",
+   "latitude": 34.92281667,
+   "longitude": 137.55984722
+  },
+  {
+   "id": "Q1333693",
+   "number": 47,
+   "name": "伊賀上野城",
+   "aliases": [
+    "上野城",
+    "伊賀文化産業城",
+    "白鳳城"
+   ],
+   "prefecture": "三重県",
+   "latitude": 34.77014167,
+   "longitude": 136.12714167
+  },
+  {
+   "id": "Q1010226",
+   "number": 48,
+   "name": "松阪城",
+   "aliases": [
+    "松坂城",
+    "松阪公園"
+   ],
+   "prefecture": "三重県",
+   "latitude": 34.57588889,
+   "longitude": 136.52572222
+  },
+  {
+   "id": "Q2436937",
+   "number": 49,
+   "name": "小谷城",
+   "aliases": [
+    "おだにじょう"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.45935917,
+   "longitude": 136.27707222
+  },
+  {
+   "id": "Q1012374",
+   "number": 50,
+   "name": "彦根城",
+   "aliases": [
+    "彦根城跡"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.276422,
+   "longitude": 136.251889
+  },
+  {
+   "id": "Q786888",
+   "number": 51,
+   "name": "安土城",
+   "prefecture": "滋賀県",
+   "latitude": 35.15591389,
+   "longitude": 136.13940833
+  },
+  {
+   "id": "Q2969462",
+   "number": 52,
+   "name": "観音寺城",
+   "aliases": [
+    "かんのんじじょう"
+   ],
+   "prefecture": "滋賀県",
+   "latitude": 35.146027,
+   "longitude": 136.157778
+  },
+  {
+   "id": "Q1013399",
+   "number": 53,
+   "name": "二条城",
+   "aliases": [
+    "二条城（通称名称）",
+    "元離宮二条城",
+    "恩賜元離宮二条城（下賜名称）",
+    "旧二条離宮（二条城）：（史跡名称）",
+    "足利氏の旧二条城跡：二条御所"
+   ],
+   "prefecture": "京都府",
+   "latitude": 35.01416667,
+   "longitude": 135.7475
+  },
+  {
+   "id": "Q321242",
+   "number": 54,
+   "name": "大阪城",
+   "aliases": [
+    "大坂城",
+    "浪華城",
+    "金城",
+    "錦城"
+   ],
+   "prefecture": "大阪府",
+   "latitude": 34.68722222,
+   "longitude": 135.52583333
+  },
+  {
+   "id": "Q1149573",
+   "number": 55,
+   "name": "千早城",
+   "prefecture": "大阪府",
+   "latitude": 34.417225,
+   "longitude": 135.65119722
+  },
+  {
+   "id": "Q8013060",
+   "number": 56,
+   "name": "竹田城",
+   "aliases": [
+    "竹田城址",
+    "竹田城趾",
+    "竹田城跡",
+    "虎臥城"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 35.3,
+   "longitude": 134.82888889
+  },
+  {
+   "id": "Q2760134",
+   "number": 57,
+   "name": "篠山城",
+   "aliases": [
+    "ささやまじょう",
+    "篠山城跡"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 35.073247,
+   "longitude": 135.217722
+  },
+  {
+   "id": "Q1151831",
+   "number": 58,
+   "name": "明石城",
+   "aliases": [
+    "喜春城",
+    "錦江城"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 34.65279722,
+   "longitude": 134.99179722
+  },
+  {
+   "id": "Q188754",
+   "number": 59,
+   "name": "姫路城",
+   "aliases": [
+    "白鷺城"
+   ],
+   "prefecture": "兵庫県",
+   "latitude": 34.83937778,
+   "longitude": 134.69409722
+  },
+  {
+   "id": "Q601598",
+   "number": 60,
+   "name": "赤穂城",
+   "prefecture": "兵庫県",
+   "latitude": 34.74566944,
+   "longitude": 134.38898333
+  },
+  {
+   "id": "Q5369622",
+   "number": 61,
+   "name": "高取城",
+   "aliases": [
+    "芙蓉城",
+    "高取山城"
+   ],
+   "prefecture": "奈良県",
+   "latitude": 34.429441666667,
+   "longitude": 135.826825
+  },
+  {
+   "id": "Q1151269",
+   "number": 62,
+   "name": "和歌山城",
+   "aliases": [
+    "虎伏城"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 34.23,
+   "longitude": 135.17
+  },
+  {
+   "id": "Q1073699",
+   "number": 63,
+   "name": "鳥取城",
+   "aliases": [
+    "久松山城",
+    "鳥取城跡"
+   ],
+   "prefecture": "鳥取県",
+   "latitude": 35.51,
+   "longitude": 134.24111111
+  },
+  {
+   "id": "Q151776",
+   "number": 64,
+   "name": "松江城",
+   "aliases": [
+    "千鳥城",
+    "城山公園"
+   ],
+   "prefecture": "島根県",
+   "latitude": 35.47513889,
+   "longitude": 133.05069444
+  },
+  {
+   "id": "Q1039004",
+   "number": 65,
+   "name": "月山富田城",
+   "aliases": [
+    "富田城",
+    "月山城"
+   ],
+   "prefecture": "島根県",
+   "latitude": 35.360967,
+   "longitude": 133.184875
+  },
+  {
+   "id": "Q846305",
+   "number": 66,
+   "name": "津和野城",
+   "aliases": [
+    "三本松城",
+    "津和野城址"
+   ],
+   "prefecture": "島根県",
+   "latitude": 34.461108,
+   "longitude": 131.763814
+  },
+  {
+   "id": "Q767818",
+   "number": 67,
+   "name": "津山城",
+   "aliases": [
+    "鶴山城"
+   ],
+   "prefecture": "岡山県",
+   "latitude": 35.062769444444,
+   "longitude": 134.00495277778
+  },
+  {
+   "id": "Q577273",
+   "number": 68,
+   "name": "備中松山城",
+   "aliases": [
+    "高梁城"
+   ],
+   "prefecture": "岡山県",
+   "latitude": 34.80907778,
+   "longitude": 133.62230278
+  },
+  {
+   "id": "Q1064626",
+   "number": 69,
+   "name": "鬼ノ城",
+   "aliases": [
+    "鬼の城",
+    "鬼城山"
+   ],
+   "prefecture": "岡山県",
+   "latitude": 34.7277,
+   "longitude": 133.7678
+  },
+  {
+   "id": "Q1013448",
+   "number": 70,
+   "name": "岡山城",
+   "aliases": [
+    "烏城公園",
+    "石山城"
+   ],
+   "prefecture": "岡山県",
+   "latitude": 34.6653,
+   "longitude": 133.9361
+  },
+  {
+   "id": "Q1071869",
+   "number": 71,
+   "name": "福山城",
+   "aliases": [
+    "久松城",
+    "葦陽城"
+   ],
+   "prefecture": "広島県",
+   "latitude": 34.49103889,
+   "longitude": 133.36112222
+  },
+  {
+   "id": "Q1036410",
+   "number": 72,
+   "name": "郡山城",
+   "aliases": [
+    "吉田郡山城"
+   ],
+   "prefecture": "広島県",
+   "latitude": 34.67428611,
+   "longitude": 132.70958889
+  },
+  {
+   "id": "Q41977",
+   "number": 73,
+   "name": "広島城",
+   "aliases": [
+    "在間城",
+    "当麻城",
+    "鯉城"
+   ],
+   "prefecture": "広島県",
+   "latitude": 34.40275,
+   "longitude": 132.45903
+  },
+  {
+   "id": "Q1156906",
+   "number": 74,
+   "name": "岩国城",
+   "aliases": [
+    "いわくにじょう",
+    "岩国城山",
+    "横山城"
+   ],
+   "prefecture": "山口県",
+   "latitude": 34.17525556,
+   "longitude": 132.17423056
+  },
+  {
+   "id": "Q1064830",
+   "number": 75,
+   "name": "萩城",
+   "aliases": [
+    "指月公園"
+   ],
+   "prefecture": "山口県",
+   "latitude": 34.41759167,
+   "longitude": 131.38247778
+  },
+  {
+   "id": "Q8011246",
+   "number": 76,
+   "name": "徳島城",
+   "aliases": [
+    "渭津城"
+   ],
+   "prefecture": "徳島県",
+   "latitude": 34.07519167,
+   "longitude": 134.555275
+  },
+  {
+   "id": "Q670725",
+   "number": 77,
+   "name": "高松城",
+   "prefecture": "香川県",
+   "latitude": 34.35,
+   "longitude": 134.05
+  },
+  {
+   "id": "Q250658",
+   "number": 78,
+   "name": "丸亀城",
+   "aliases": [
+    "亀山公園",
+    "亀山城",
+    "蓬莱城"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.28628611,
+   "longitude": 133.80009722
+  },
+  {
+   "id": "Q1071856",
+   "number": 79,
+   "name": "今治城",
+   "aliases": [
+    "吹上城",
+    "吹揚公園"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 34.0633,
+   "longitude": 133.0068
+  },
+  {
+   "id": "Q649463",
+   "number": 80,
+   "name": "湯築城",
+   "prefecture": "愛媛県",
+   "latitude": 33.84810833,
+   "longitude": 132.78674167
+  },
+  {
+   "id": "Q981357",
+   "number": 81,
+   "name": "松山城",
+   "aliases": [
+    "伊予松山城",
+    "勝山城",
+    "金亀城"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.84553889,
+   "longitude": 132.76572222
+  },
+  {
+   "id": "Q1036874",
+   "number": 82,
+   "name": "大洲城",
+   "aliases": [
+    "城山公園"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.51,
+   "longitude": 132.54
+  },
+  {
+   "id": "Q909515",
+   "number": 83,
+   "name": "宇和島城",
+   "aliases": [
+    "城山公園"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.21947778,
+   "longitude": 132.56523611
+  },
+  {
+   "id": "Q1012815",
+   "number": 84,
+   "name": "高知城",
+   "aliases": [
+    "大高坂城",
+    "大高坂山城",
+    "高知公園"
+   ],
+   "prefecture": "高知県",
+   "latitude": 33.561111111111,
+   "longitude": 133.53138888889
+  },
+  {
+   "id": "Q1143944",
+   "number": 85,
+   "name": "福岡城",
+   "aliases": [
+    "ふくおかじょう",
+    "まいづるじょう",
+    "舞鶴城"
+   ],
+   "prefecture": "福岡県",
+   "latitude": 33.58438056,
+   "longitude": 130.38310278
+  },
+  {
+   "id": "Q4503545",
+   "number": 86,
+   "name": "大野城",
+   "prefecture": "福岡県",
+   "latitude": 33.54,
+   "longitude": 130.51
+  },
+  {
+   "id": "Q711685",
+   "number": 87,
+   "name": "名護屋城",
+   "prefecture": "佐賀県",
+   "latitude": 33.53003333,
+   "longitude": 129.869375
+  },
+  {
+   "id": "Q1049645",
+   "number": 88,
+   "name": "吉野ヶ里（吉野ヶ里歴史公園）",
+   "aliases": [
+    "吉野ケ里遺跡",
+    "吉野ヶ里遺跡"
+   ],
+   "prefecture": "佐賀県",
+   "latitude": 33.32361111,
+   "longitude": 130.39069444
+  },
+  {
+   "id": "Q1071095",
+   "number": 89,
+   "name": "佐賀城",
+   "aliases": [
+    "佐嘉城"
+   ],
+   "prefecture": "佐賀県",
+   "latitude": 33.24574722,
+   "longitude": 130.302125
+  },
+  {
+   "id": "Q1191029",
+   "number": 90,
+   "name": "平戸城",
+   "prefecture": "長崎県",
+   "latitude": 33.368575,
+   "longitude": 129.55756667
+  },
+  {
+   "id": "Q1322463",
+   "number": 91,
+   "name": "島原城",
+   "aliases": [
+    "島原城跡公園",
+    "森岳城"
+   ],
+   "prefecture": "長崎県",
+   "latitude": 32.7892,
+   "longitude": 130.3672
+  },
+  {
+   "id": "Q613355",
+   "number": 92,
+   "name": "熊本城",
+   "aliases": [
+    "熊本城跡",
+    "銀杏城"
+   ],
+   "prefecture": "熊本県",
+   "latitude": 32.80602778,
+   "longitude": 130.70589722
+  },
+  {
+   "id": "Q8011484",
+   "number": 93,
+   "name": "人吉城",
+   "aliases": [
+    "人吉城跡"
+   ],
+   "prefecture": "熊本県",
+   "latitude": 32.21108333,
+   "longitude": 130.76649167
+  },
+  {
+   "id": "Q1142070",
+   "number": 94,
+   "name": "大分府内城",
+   "aliases": [
+    "大分城",
+    "府内城",
+    "府内城址",
+    "荷揚城"
+   ],
+   "prefecture": "大分県",
+   "latitude": 33.24064167,
+   "longitude": 131.61143333
+  },
+  {
+   "id": "Q8010033",
+   "number": 95,
+   "name": "岡城",
+   "aliases": [
+    "竹田城",
+    "豊後岡城",
+    "豊後竹田城"
+   ],
+   "prefecture": "大分県",
+   "latitude": 32.96921667,
+   "longitude": 131.40806944
+  },
+  {
+   "id": "Q844044",
+   "number": 96,
+   "name": "飫肥城",
+   "prefecture": "宮崎県",
+   "latitude": 31.62910556,
+   "longitude": 131.35030278
+  },
+  {
+   "id": "Q1066957",
+   "number": 97,
+   "name": "鹿児島城",
+   "aliases": [
+    "鶴丸城",
+    "鹿児島城跡"
+   ],
+   "prefecture": "鹿児島県",
+   "latitude": 31.59825,
+   "longitude": 130.55441389
+  },
+  {
+   "id": "Q508866",
+   "number": 98,
+   "name": "今帰仁城",
+   "aliases": [
+    "ほくざん",
+    "今帰仁城跡"
+   ],
+   "prefecture": "沖縄県",
+   "latitude": 26.69077778,
+   "longitude": 127.92977778
+  },
+  {
+   "id": "Q1013209",
+   "number": 99,
+   "name": "中城城",
+   "aliases": [
+    "中城グスク",
+    "中城城跡"
+   ],
+   "prefecture": "沖縄県",
+   "latitude": 26.28419444,
+   "longitude": 127.80136111
+  },
+  {
+   "id": "Q907052",
+   "number": 100,
+   "name": "首里城",
+   "aliases": [
+    "スイグスク",
+    "首里城跡"
+   ],
+   "prefecture": "沖縄県",
+   "latitude": 26.21703056,
+   "longitude": 127.719475
+  }
+ ]
+}

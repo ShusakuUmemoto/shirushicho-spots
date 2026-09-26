@@ -15,7 +15,11 @@ This repository describes how the shrine / temple / castle database bundled with
   This repository fulfils ODbL section 4.6 by publishing the method used to create it.
 - 寺社・城の詳しい情報（表 `spot_details`）は、行政のオープンデータと文化庁の国指定文化財等データベースを加工して作っています。公開元とライセンスは下の「詳しい情報」を見てください。
   The `spot_details` table is derived from open data published by local governments (see "詳しい情報 / Details" below).
-- スクリプト（`scripts/spot/fetch.py`・`scripts/spot/details.py`）は MIT License です（`LICENSE`）。
+- ご祭神・ご本尊・城郭構造などと冒頭の文（表 `spot_wiki`）は、日本語版 Wikipedia の各記事を加工したもので、
+  [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) のもとにあります（行ごとに記事の名前・URL・版の日付を持ちます）。下の「Wikipedia の情報」を見てください。
+  The `spot_wiki` table is adapted from Japanese Wikipedia articles and is licensed under CC BY-SA 4.0.
+- 札所の一覧（`GoshuinApp/Resources/Pilgrimages/*.json`）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
+- スクリプト（`scripts/spot/` の `fetch.py`・`details.py`・`wikipedia.py`・`summaries.py`）は MIT License です（`LICENSE`）。
 
 ## 作り方 / How to build
 
@@ -118,3 +122,37 @@ python3 scripts/spot/details.py
 `meta` には、詳しい情報の件数（`detailsCount`）・公開元（`detailsSources`）・データの版（`dataVersion`）・書き足した日（`updatedAt`）も入ります。
 データの版は `spots` と `spot_details` の全行から作る値（SHA-256 の先頭 16 桁）で、中身が同じなら流し直しても変わりません。
 アプリに入れる DB を作ったときは、同じ版を `GoshuinApp/Resources/spots-version.txt` にも書きます（アプリは2つを比べて、古いデータを自動で落とし直します）。
+
+## Wikipedia の情報 / Wikipedia
+
+ご祭神・ご本尊・宗派・社格・城郭構造などと冒頭の文は、日本語版 Wikipedia の記事から `scripts/spot/wikipedia.py` で同じ DB に書き足します
+（`details.py` のあとに流します。`fetch.py` → `details.py` → `wikipedia.py` の順）。
+
+```
+python3 scripts/spot/wikipedia.py
+python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト（通信しない）
+```
+
+- 対象は、国宝の建物がある寺社・城（`spot_details` の `cultural_properties`）と、札所の一覧（`GoshuinApp/Resources/Pilgrimages/*.json`）の札所だけです。
+- Wikidata の QID から日本語版の記事の名前を引き（`wbgetentities` の sitelinks）、記事の本文（wikitext）の情報欄と冒頭の文（TextExtracts）を読みます。
+- 値は書式（脚注・リンク・読みがなだけの括弧）を外して短くするだけにし、言い換えません。多いときは4件までにして「など」を付けます。
+- 冒頭の文は、最初の段落の文を 160 字まで（文の途中で切らない）そのまま使います。
+- 窓口には User-Agent を付け、送るたびに1秒あけます。答えは一時フォルダに残し、やり直しても送りません。
+- 最後に `scripts/spot/summaries.py` で、各場所の1文目だけを `GoshuinApp/Resources/spot-summaries.json` に書き出します（アプリ本体に入れるもの。DB を落とさない人の画面に出します）。
+
+### 表 / Schema
+
+`spot_wiki`（QID ごとに1行。値のない項目は空）
+
+| 列 | 中身 |
+| --- | --- |
+| `qid` | Wikidata の ID（`spots` の `wikidata`、札所の一覧の QID） |
+| `title`・`url` | 記事の名前・URL |
+| `summary` | 冒頭の文 |
+| `deity`・`honzon`・`sect`・`rank` | 主祭神・本尊・宗派・社格 |
+| `founded`・`founder` | 創建（築城）の年・開基（築城主） |
+| `castle_structure`・`tenshu_structure` | 城郭構造・天守構造 |
+| `revised` | 読んだ記事の版の日付 |
+| `license` | `CC BY-SA 4.0` |
+
+`meta` には件数（`wikiCount`）も入り、データの版（`dataVersion`）は `spot_wiki` も含めて作り直します。

@@ -1,0 +1,788 @@
+{
+ "id": "shikoku88",
+ "title": "四国八十八ヶ所",
+ "category": "寺院",
+ "selectedBy": "四国八十八ヶ所霊場会",
+ "spots": [
+  {
+   "id": "Q1085463",
+   "number": 1,
+   "name": "霊山寺",
+   "aliases": [
+    "竺和山霊山寺"
+   ],
+   "prefecture": "徳島県",
+   "latitude": 34.15940277777778,
+   "longitude": 134.5029722222222
+  },
+  {
+   "id": "Q1088485",
+   "number": 2,
+   "name": "極楽寺",
+   "prefecture": "徳島県",
+   "latitude": 34.15565,
+   "longitude": 134.4903472222222
+  },
+  {
+   "id": "Q3198759",
+   "number": 3,
+   "name": "金泉寺",
+   "prefecture": "徳島県",
+   "latitude": 34.14743611111111,
+   "longitude": 134.46854444444443
+  },
+  {
+   "id": "Q3012126",
+   "number": 4,
+   "name": "大日寺",
+   "aliases": [
+    "黒谷寺"
+   ],
+   "prefecture": "徳島県",
+   "latitude": 34.15130555555555,
+   "longitude": 134.4308888888889
+  },
+  {
+   "id": "Q3179308",
+   "number": 5,
+   "name": "地蔵寺",
+   "prefecture": "徳島県",
+   "latitude": 34.13721944444445,
+   "longitude": 134.43192499999998
+  },
+  {
+   "id": "Q2852417",
+   "number": 6,
+   "name": "安楽寺",
+   "prefecture": "徳島県",
+   "latitude": 34.11805555555556,
+   "longitude": 134.38838888888887
+  },
+  {
+   "id": "Q3191246",
+   "number": 7,
+   "name": "十楽寺",
+   "prefecture": "徳島県",
+   "latitude": 34.12075,
+   "longitude": 134.377925
+  },
+  {
+   "id": "Q3200347",
+   "number": 8,
+   "name": "熊谷寺",
+   "prefecture": "徳島県",
+   "latitude": 34.12275833333334,
+   "longitude": 134.3400388888889
+  },
+  {
+   "id": "Q3146369",
+   "number": 9,
+   "name": "法輪寺",
+   "prefecture": "徳島県",
+   "latitude": 34.10437777777778,
+   "longitude": 134.3338138888889
+  },
+  {
+   "id": "Q511070",
+   "number": 10,
+   "name": "切幡寺",
+   "prefecture": "徳島県",
+   "latitude": 34.10775,
+   "longitude": 134.3042777777778
+  },
+  {
+   "id": "Q11622752",
+   "number": 11,
+   "name": "藤井寺",
+   "prefecture": "徳島県",
+   "latitude": 34.05166666666666,
+   "longitude": 134.3485
+  },
+  {
+   "id": "Q11567639",
+   "number": 12,
+   "name": "焼山寺",
+   "prefecture": "徳島県",
+   "latitude": 33.98502777777778,
+   "longitude": 134.31025000000002
+  },
+  {
+   "id": "Q11435622",
+   "number": 13,
+   "name": "大日寺",
+   "prefecture": "徳島県",
+   "latitude": 34.03811666666667,
+   "longitude": 134.46268333333333
+  },
+  {
+   "id": "Q11481422",
+   "number": 14,
+   "name": "常楽寺",
+   "prefecture": "徳島県",
+   "latitude": 34.05033333333333,
+   "longitude": 134.47563888888888
+  },
+  {
+   "id": "Q11657516",
+   "number": 15,
+   "name": "国分寺",
+   "aliases": [
+    "阿波国分寺"
+   ],
+   "prefecture": "徳島県",
+   "latitude": 34.055611111111105,
+   "longitude": 134.47361111111113
+  },
+  {
+   "id": "Q11630606",
+   "number": 16,
+   "name": "観音寺",
+   "prefecture": "徳島県",
+   "latitude": 34.068472222222226,
+   "longitude": 134.47434444444445
+  },
+  {
+   "id": "Q11373550",
+   "number": 17,
+   "name": "井戸寺",
+   "prefecture": "徳島県",
+   "latitude": 34.085166666666666,
+   "longitude": 134.48544444444443
+  },
+  {
+   "id": "Q11492248",
+   "number": 18,
+   "name": "恩山寺",
+   "prefecture": "徳島県",
+   "latitude": 33.986000000000004,
+   "longitude": 134.57825
+  },
+  {
+   "id": "Q11598034",
+   "number": 19,
+   "name": "立江寺",
+   "prefecture": "徳島県",
+   "latitude": 33.96786111111111,
+   "longitude": 134.60580555555555
+  },
+  {
+   "id": "Q11676039",
+   "number": 20,
+   "name": "鶴林寺",
+   "prefecture": "徳島県",
+   "latitude": 33.91386111111111,
+   "longitude": 134.5056111111111
+  },
+  {
+   "id": "Q11444739",
+   "number": 21,
+   "name": "太龍寺",
+   "prefecture": "徳島県",
+   "latitude": 33.88252777777778,
+   "longitude": 134.5218888888889
+  },
+  {
+   "id": "Q11483473",
+   "number": 22,
+   "name": "平等寺",
+   "prefecture": "徳島県",
+   "latitude": 33.85183333333333,
+   "longitude": 134.58277777777778
+  },
+  {
+   "id": "Q11622491",
+   "number": 23,
+   "name": "薬王寺",
+   "prefecture": "徳島県",
+   "latitude": 33.732305555555556,
+   "longitude": 134.52758333333335
+  },
+  {
+   "id": "Q11515607",
+   "number": 24,
+   "name": "最御崎寺",
+   "aliases": [
+    "東寺"
+   ],
+   "prefecture": "高知県",
+   "latitude": 33.249008333333336,
+   "longitude": 134.17573888888887
+  },
+  {
+   "id": "Q11556229",
+   "number": 25,
+   "name": "津照寺",
+   "prefecture": "高知県",
+   "latitude": 33.28780555555555,
+   "longitude": 134.14825
+  },
+  {
+   "id": "Q11646556",
+   "number": 26,
+   "name": "金剛頂寺",
+   "aliases": [
+    "西寺"
+   ],
+   "prefecture": "高知県",
+   "latitude": 33.30722222222222,
+   "longitude": 134.12286111111112
+  },
+  {
+   "id": "Q11589588",
+   "number": 27,
+   "name": "神峯寺",
+   "prefecture": "高知県",
+   "latitude": 33.46761111111111,
+   "longitude": 133.97477777777777
+  },
+  {
+   "id": "Q11435623",
+   "number": 28,
+   "name": "大日寺",
+   "prefecture": "高知県",
+   "latitude": 33.57758333333334,
+   "longitude": 133.70538888888888
+  },
+  {
+   "id": "Q10927608",
+   "number": 29,
+   "name": "国分寺",
+   "aliases": [
+    "土佐国分寺"
+   ],
+   "prefecture": "高知県",
+   "latitude": 33.59869444444445,
+   "longitude": 133.64041666666665
+  },
+  {
+   "id": "Q11418945",
+   "number": 30,
+   "name": "善楽寺",
+   "prefecture": "高知県",
+   "latitude": 33.59191666666667,
+   "longitude": 133.57755555555556
+  },
+  {
+   "id": "Q426742",
+   "number": 31,
+   "name": "竹林寺",
+   "prefecture": "高知県",
+   "latitude": 33.54661111111111,
+   "longitude": 133.5774722222222
+  },
+  {
+   "id": "Q11591177",
+   "number": 32,
+   "name": "禅師峰寺",
+   "prefecture": "高知県",
+   "latitude": 33.526694444444445,
+   "longitude": 133.61138888888888
+  },
+  {
+   "id": "Q11659947",
+   "number": 33,
+   "name": "雪蹊寺",
+   "prefecture": "高知県",
+   "latitude": 33.50083333333333,
+   "longitude": 133.54308333333333
+  },
+  {
+   "id": "Q11596438",
+   "number": 34,
+   "name": "種間寺",
+   "prefecture": "高知県",
+   "latitude": 33.49172222222222,
+   "longitude": 133.48758333333333
+  },
+  {
+   "id": "Q11561323",
+   "number": 35,
+   "name": "清瀧寺",
+   "prefecture": "高知県",
+   "latitude": 33.5125,
+   "longitude": 133.4095
+  },
+  {
+   "id": "Q11662839",
+   "number": 36,
+   "name": "青龍寺",
+   "aliases": [
+    "波切り不動"
+   ],
+   "prefecture": "高知県",
+   "latitude": 33.425999999999995,
+   "longitude": 133.45080555555555
+  },
+  {
+   "id": "Q11475095",
+   "number": 37,
+   "name": "岩本寺",
+   "prefecture": "高知県",
+   "latitude": 33.207972222222224,
+   "longitude": 133.1346111111111
+  },
+  {
+   "id": "Q11646540",
+   "number": 38,
+   "name": "金剛福寺",
+   "prefecture": "高知県",
+   "latitude": 32.72602777777778,
+   "longitude": 133.01855555555557
+  },
+  {
+   "id": "Q11486476",
+   "number": 39,
+   "name": "延光寺",
+   "prefecture": "高知県",
+   "latitude": 32.96130555555556,
+   "longitude": 132.77405555555558
+  },
+  {
+   "id": "Q3192685",
+   "number": 40,
+   "name": "観自在寺",
+   "prefecture": "愛媛県",
+   "latitude": 32.964666666666666,
+   "longitude": 132.56405555555557
+  },
+  {
+   "id": "Q11679196",
+   "number": 41,
+   "name": "龍光寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.29519444444444,
+   "longitude": 132.5985
+  },
+  {
+   "id": "Q11385315",
+   "number": 42,
+   "name": "佛木寺",
+   "aliases": [
+    "仏木寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.310583333333334,
+   "longitude": 132.58147222222223
+  },
+  {
+   "id": "Q11512501",
+   "number": 43,
+   "name": "明石寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.36922222222222,
+   "longitude": 132.51897222222223
+  },
+  {
+   "id": "Q11434511",
+   "number": 44,
+   "name": "大寶寺",
+   "aliases": [
+    "大宝寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.660888888888884,
+   "longitude": 132.91208333333333
+  },
+  {
+   "id": "Q11474382",
+   "number": 45,
+   "name": "岩屋寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.65866666666667,
+   "longitude": 132.98072222222223
+  },
+  {
+   "id": "Q11556869",
+   "number": 46,
+   "name": "浄瑠璃寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.75355555555556,
+   "longitude": 132.8191111111111
+  },
+  {
+   "id": "Q11390686",
+   "number": 47,
+   "name": "八坂寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.75794444444445,
+   "longitude": 132.81286111111112
+  },
+  {
+   "id": "Q11628773",
+   "number": 48,
+   "name": "西林寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.79372222222222,
+   "longitude": 132.81394444444445
+  },
+  {
+   "id": "Q3191228",
+   "number": 49,
+   "name": "浄土寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.81666666666667,
+   "longitude": 132.80852777777778
+  },
+  {
+   "id": "Q11608174",
+   "number": 50,
+   "name": "繁多寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.828138888888894,
+   "longitude": 132.80455555555557
+  },
+  {
+   "id": "Q3155277",
+   "number": 51,
+   "name": "石手寺",
+   "aliases": [
+    "安養寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.847861111111115,
+   "longitude": 132.7964722222222
+  },
+  {
+   "id": "Q3514066",
+   "number": 52,
+   "name": "太山寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.885083333333334,
+   "longitude": 132.7149722222222
+  },
+  {
+   "id": "Q3054442",
+   "number": 53,
+   "name": "圓明寺",
+   "aliases": [
+    "円明寺",
+    "海岸山圓明密寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.89175,
+   "longitude": 132.73966666666666
+  },
+  {
+   "id": "Q11486488",
+   "number": 54,
+   "name": "延命寺",
+   "aliases": [
+    "不動院圓明寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 34.066833333333335,
+   "longitude": 132.964
+  },
+  {
+   "id": "Q11407501",
+   "number": 55,
+   "name": "南光坊",
+   "prefecture": "愛媛県",
+   "latitude": 34.06875,
+   "longitude": 132.99575
+  },
+  {
+   "id": "Q11555707",
+   "number": 56,
+   "name": "泰山寺",
+   "prefecture": "愛媛県",
+   "latitude": 34.05011111111111,
+   "longitude": 132.97458333333333
+  },
+  {
+   "id": "Q11535734",
+   "number": 57,
+   "name": "栄福寺",
+   "prefecture": "愛媛県",
+   "latitude": 34.029472222222225,
+   "longitude": 132.97847222222222
+  },
+  {
+   "id": "Q11378194",
+   "number": 58,
+   "name": "仙遊寺",
+   "prefecture": "愛媛県",
+   "latitude": 34.013194444444444,
+   "longitude": 132.97736111111112
+  },
+  {
+   "id": "Q10884820",
+   "number": 59,
+   "name": "国分寺",
+   "aliases": [
+    "伊予国分寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 34.02616666666667,
+   "longitude": 133.02544444444445
+  },
+  {
+   "id": "Q11542681",
+   "number": 60,
+   "name": "横峰寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.83786111111112,
+   "longitude": 133.1111388888889
+  },
+  {
+   "id": "Q11667203",
+   "number": 61,
+   "name": "香園寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.89352777777778,
+   "longitude": 133.10330555555555
+  },
+  {
+   "id": "Q11452530",
+   "number": 62,
+   "name": "宝寿寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.897333333333336,
+   "longitude": 133.11494444444443
+  },
+  {
+   "id": "Q11414184",
+   "number": 63,
+   "name": "吉祥寺",
+   "prefecture": "愛媛県",
+   "latitude": 33.896055555555556,
+   "longitude": 133.12916666666666
+  },
+  {
+   "id": "Q11397792",
+   "number": 64,
+   "name": "前神寺",
+   "aliases": [
+    "石鈇山",
+    "金色院"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.89022222222222,
+   "longitude": 133.16066666666669
+  },
+  {
+   "id": "Q11357215",
+   "number": 65,
+   "name": "三角寺",
+   "aliases": [
+    "由霊山三角寺"
+   ],
+   "prefecture": "愛媛県",
+   "latitude": 33.96763888888889,
+   "longitude": 133.5865
+  },
+  {
+   "id": "Q11660090",
+   "number": 66,
+   "name": "雲辺寺",
+   "prefecture": "徳島県",
+   "latitude": 34.035222222222224,
+   "longitude": 133.72372222222222
+  },
+  {
+   "id": "Q11438586",
+   "number": 67,
+   "name": "大興寺",
+   "prefecture": "香川県",
+   "latitude": 34.10219444444444,
+   "longitude": 133.71916666666667
+  },
+  {
+   "id": "Q11589702",
+   "number": 68,
+   "name": "神恵院",
+   "aliases": [
+    "琴弾山神恵院"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.13398611111111,
+   "longitude": 133.64733333333334
+  },
+  {
+   "id": "Q11630610",
+   "number": 69,
+   "name": "観音寺",
+   "prefecture": "香川県",
+   "latitude": 34.1345,
+   "longitude": 133.64752777777778
+  },
+  {
+   "id": "Q3325310",
+   "number": 70,
+   "name": "本山寺",
+   "aliases": [
+    "七宝山持宝院本山寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.13966666666666,
+   "longitude": 133.69405555555556
+  },
+  {
+   "id": "Q11487478",
+   "number": 71,
+   "name": "弥谷寺",
+   "prefecture": "香川県",
+   "latitude": 34.22972222222222,
+   "longitude": 133.7242611111111
+  },
+  {
+   "id": "Q11515242",
+   "number": 72,
+   "name": "曼荼羅寺",
+   "aliases": [
+    "七佛寺",
+    "世坂寺",
+    "延命院曼荼羅寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.21938888888889,
+   "longitude": 133.75027777777777
+  },
+  {
+   "id": "Q11395826",
+   "number": 73,
+   "name": "出釈迦寺",
+   "prefecture": "香川県",
+   "latitude": 34.223305555555555,
+   "longitude": 133.75021944444444
+  },
+  {
+   "id": "Q11577737",
+   "number": 74,
+   "name": "甲山寺",
+   "prefecture": "香川県",
+   "latitude": 34.23319444444444,
+   "longitude": 133.7657638888889
+  },
+  {
+   "id": "Q787035",
+   "number": 75,
+   "name": "善通寺",
+   "prefecture": "香川県",
+   "latitude": 34.22511111111111,
+   "longitude": 133.7741388888889
+  },
+  {
+   "id": "Q11646414",
+   "number": 76,
+   "name": "金倉寺",
+   "prefecture": "香川県",
+   "latitude": 34.25009722222222,
+   "longitude": 133.7810138888889
+  },
+  {
+   "id": "Q11641857",
+   "number": 77,
+   "name": "道隆寺",
+   "prefecture": "香川県",
+   "latitude": 34.27675,
+   "longitude": 133.76269444444443
+  },
+  {
+   "id": "Q11643424",
+   "number": 78,
+   "name": "郷照寺",
+   "prefecture": "香川県",
+   "latitude": 34.30669444444444,
+   "longitude": 133.82458333333332
+  },
+  {
+   "id": "Q11443140",
+   "number": 79,
+   "name": "天皇寺",
+   "aliases": [
+    "高照院"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.31147222222222,
+   "longitude": 133.8828611111111
+  },
+  {
+   "id": "Q1101226",
+   "number": 80,
+   "name": "國分寺",
+   "aliases": [
+    "国分寺",
+    "讃岐国分寺",
+    "讃岐国分寺跡",
+    "讃岐國分寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.30313888888889,
+   "longitude": 133.94416666666666
+  },
+  {
+   "id": "Q11579651",
+   "number": 81,
+   "name": "白峯寺",
+   "aliases": [
+    "白峰寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.33352777777778,
+   "longitude": 133.92676388888887
+  },
+  {
+   "id": "Q11536486",
+   "number": 82,
+   "name": "根香寺",
+   "prefecture": "香川県",
+   "latitude": 34.344500000000004,
+   "longitude": 133.96055555555554
+  },
+  {
+   "id": "Q11352538",
+   "number": 83,
+   "name": "一宮寺",
+   "prefecture": "香川県",
+   "latitude": 34.28661111111111,
+   "longitude": 134.02658333333335
+  },
+  {
+   "id": "Q3571906",
+   "number": 84,
+   "name": "屋島寺",
+   "prefecture": "香川県",
+   "latitude": 34.35791666666667,
+   "longitude": 134.10125
+  },
+  {
+   "id": "Q11391459",
+   "number": 85,
+   "name": "八栗寺",
+   "prefecture": "香川県",
+   "latitude": 34.35988888888889,
+   "longitude": 134.13952777777777
+  },
+  {
+   "id": "Q11490894",
+   "number": 86,
+   "name": "志度寺",
+   "aliases": [
+    "補陀洛山清浄光院志度寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.32430555555556,
+   "longitude": 134.1796388888889
+  },
+  {
+   "id": "Q11651831",
+   "number": 87,
+   "name": "長尾寺",
+   "prefecture": "香川県",
+   "latitude": 34.26670555555555,
+   "longitude": 134.17171944444445
+  },
+  {
+   "id": "Q667111",
+   "number": 88,
+   "name": "大窪寺",
+   "aliases": [
+    "医王山遍照光院大窪寺"
+   ],
+   "prefecture": "香川県",
+   "latitude": 34.19140833333333,
+   "longitude": 134.20673333333332
+  }
+ ]
+}

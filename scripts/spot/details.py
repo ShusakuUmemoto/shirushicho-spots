@@ -544,10 +544,14 @@ def write(connection: sqlite3.Connection, found: dict[str, dict], sources: list[
 
 
 def data_version(connection: sqlite3.Connection) -> str:
-    """DB の中身（spots と spot_details の全行）から作る版。中身が同じなら同じ値になる"""
+    """DB の中身（spots と spot_details、wikipedia.py が書く spot_wiki の全行）から作る版。中身が同じなら同じ値になる"""
     digest = hashlib.sha256()
-    for table in ("spots", "spot_details"):
-        for row in connection.execute(f"SELECT * FROM {table} ORDER BY id"):
+    # 表ごとの主キー（行の並びを決める。spot_wiki は Wikidata の QID で引く）
+    order_keys = {"spots": "id", "spot_details": "id", "spot_wiki": "qid"}
+    tables = [table for table in order_keys if connection.execute(
+        "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?", (table,)).fetchone()]
+    for table in tables:
+        for row in connection.execute(f"SELECT * FROM {table} ORDER BY {order_keys[table]}"):
             digest.update(repr(row).encode())
     return digest.hexdigest()[:VERSION_LENGTH]
 
