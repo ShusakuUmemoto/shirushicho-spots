@@ -13,7 +13,7 @@ This repository describes how the shrine / temple / castle database bundled with
   © OpenStreetMap contributors
 - The database is a Derivative Database of OpenStreetMap and is licensed under ODbL 1.0.
   This repository fulfils ODbL section 4.6 by publishing the method used to create it.
-- 寺社・城の詳しい情報（表 `spot_details`）は、行政のオープンデータと文化庁の国指定文化財等データベースを加工して作っています。公開元とライセンスは下の「詳しい情報」を見てください。
+- 寺社・城の詳しい情報（表 `spot_details`）は、行政のオープンデータを加工して作っています。公開元とライセンスは下の「詳しい情報」を見てください。
   The `spot_details` table is derived from open data published by local governments (see "詳しい情報 / Details" below).
 - ご祭神・ご本尊・城郭構造などと冒頭の文（表 `spot_wiki`）は、日本語版 Wikipedia の各記事を加工したもので、
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) のもとにあります（行ごとに記事の名前・URL・版の日付を持ちます）。下の「Wikipedia の情報」を見てください。
