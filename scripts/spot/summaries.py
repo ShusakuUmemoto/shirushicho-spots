@@ -6,7 +6,8 @@
     python3 scripts/spot/summaries.py --db 別の.sqlite --out 別の.json  # 試すとき
 
 - 全国の寺社のデータ（spots.sqlite）は竹プランの人だけが落とすので、梅プランの人の印帖の「〇〇について」には1文目だけをこの JSON から出す。
-- 場所ごとに QID・記事の名前・1文目と、当て込みに使う名前と座標（spots の同じ QID の行。札所だけの場所は空で、QID で当てる）を持つ。
+- 場所ごとに QID・記事の名前・1文目・ご祭神・ご本尊（値のある所だけ）と、当て込みに使う名前と座標（spots の同じ QID の行。札所だけの場所は空で、QID で当てる）を持つ。
+- ご祭神・ご本尊は「何が祀られているか」を梅プランの人にも出すため。宗派・創建などの鍵は竹プランで DB から出す。
 - 1文目は、括弧（「」・（）など）の外の最初の「。」まで。言い換えない。
 - 標準ライブラリだけで動く。
 """
@@ -43,14 +44,21 @@ def first_sentence(text: str) -> str:
 
 def summaries(connection: sqlite3.Connection) -> list[dict]:
     places = []
-    for qid, title, summary in connection.execute(
-            "SELECT qid, title, summary FROM spot_wiki WHERE summary != '' ORDER BY qid"):
+    for qid, title, summary, deity, honzon in connection.execute(
+            "SELECT qid, title, summary, deity, honzon FROM spot_wiki WHERE summary != '' ORDER BY qid"):
         spots = [
             {"name": name, "lat": round(lat, COORDINATE_DIGITS), "lon": round(lon, COORDINATE_DIGITS)}
             for name, lat, lon in connection.execute(
                 "SELECT name, lat, lon FROM spots WHERE wikidata = ? ORDER BY id", (qid,))
         ]
-        places.append({"qid": qid, "title": title, "sentence": first_sentence(summary), "spots": spots})
+        place = {"qid": qid, "title": title, "sentence": first_sentence(summary)}
+        # 値のない鍵は書かない（ファイルを小さくする）
+        if deity:
+            place["deity"] = deity
+        if honzon:
+            place["honzon"] = honzon
+        place["spots"] = spots
+        places.append(place)
     return places
 
 

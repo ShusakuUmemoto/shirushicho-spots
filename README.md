@@ -18,8 +18,11 @@ This repository describes how the shrine / temple / castle database bundled with
 - ご祭神・ご本尊・城郭構造などと冒頭の文（表 `spot_wiki`）は、日本語版 Wikipedia の各記事を加工したもので、
   [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/deed.ja) のもとにあります（行ごとに記事の名前・URL・版の日付を持ちます）。下の「Wikipedia の情報」を見てください。
   The `spot_wiki` table is adapted from Japanese Wikipedia articles and is licensed under CC BY-SA 4.0.
+- 市区町村（表 `spot_area`）は、国土数値情報「行政区域データ（N03）」（国土交通省、[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)）の市区町村の境界を使って決めています。
+  出典：国土数値情報（行政区域データ）（国土交通省）を加工して作成。下の「市区町村」を見てください。
+  The `spot_area` table is derived using the administrative boundaries of the National Land Numerical Information (N03, MLIT, CC BY 4.0).
 - 札所の一覧（`GoshuinApp/Resources/Pilgrimages/*.json`）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
-- スクリプト（`scripts/spot/` の `fetch.py`・`details.py`・`wikipedia.py`・`summaries.py`）は MIT License です（`LICENSE`）。
+- スクリプト（`scripts/spot/` の `fetch.py`・`details.py`・`wikipedia.py`・`summaries.py`・`municipality.py`）は MIT License です（`LICENSE`）。
 
 ## 作り方 / How to build
 
@@ -101,7 +104,7 @@ python3 scripts/spot/details.py
 | `source`・`license` | 公開元の名前・ライセンス |
 
 `meta` には、詳しい情報の件数（`detailsCount`）・公開元（`detailsSources`）・データの版（`dataVersion`）・書き足した日（`updatedAt`）も入ります。
-データの版は `spots` と `spot_details` の全行から作る値（SHA-256 の先頭 16 桁）で、中身が同じなら流し直しても変わりません。
+データの版は `spots` と `spot_details`（と、あれば `spot_wiki`・`spot_area`）の全行から作る値（SHA-256 の先頭 16 桁）で、中身が同じなら流し直しても変わりません。
 アプリに入れる DB を作ったときは、同じ版を `GoshuinApp/Resources/spots-version.txt` にも書きます（アプリは2つを比べて、古いデータを自動で落とし直します）。
 
 ## Wikipedia の情報 / Wikipedia
@@ -137,3 +140,27 @@ python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト�
 | `license` | `CC BY-SA 4.0` |
 
 `meta` には件数（`wikiCount`）も入り、データの版（`dataVersion`）は `spot_wiki` も含めて作り直します。
+
+## 市区町村 / Municipality
+
+同じ名前の寺社（八坂神社は全国に300か所余り）を一覧で見分けるため、市区町村を `scripts/spot/municipality.py` で同じ DB に書き足します
+（`wikipedia.py` のあとに流します。`fetch.py` → `details.py` → `wikipedia.py` → `municipality.py` の順。通信はしません）。
+
+```
+python3 scripts/spot/municipality.py ~/Downloads/N03-20240101_GML/N03-20240101.geojson
+```
+
+- 元データは [国土数値情報 行政区域データ](https://nlftp.mlit.go.jp/ksj/gml/datalist/KsjTmplt-N03-2024.html) の全国版の GeoJSON（市区町村ごとの多角形）です。
+- 各寺社・城の座標が入る多角形の市区町村名（`N03_004`）に、政令市の区名（`N03_005`）をつなぎます（「京都市東山区」「天理市」「斑鳩町」。郡名は付けません）。
+- どの多角形にも入らない点（海際・埋め立て地など）は、境界の外周の点がいちばん近い市区町村にします（約1km より遠ければ付けません）。
+
+### 表 / Schema
+
+`spot_area`
+
+| 列 | 中身 |
+| --- | --- |
+| `id` | `spots` の `id` |
+| `municipality` | 市区町村（政令市は区まで） |
+
+`meta` には件数（`areaCount`）も入り、データの版（`dataVersion`）は `spot_area` も含めて作り直します。
