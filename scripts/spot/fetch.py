@@ -11,6 +11,7 @@
   （伏見稲荷大社・嚴島神社・成田山新勝寺など）ので、それも拾う。
   名前のない小さな祠と、「本殿」「拝殿」のような境内の建物の名前だけのものは除く。way・relation は代表点（center）を使う。
 - 同じ名前で 50m 以内のもの（node と way の重複など）は1件にまとめる。境内と同じ名前の建物は 500m 以内ならまとめる。
+- 巡礼リストの場所のうち集まらなかったもの（公園・遺跡として登録された城跡など）は、pilgrimage_places.py で巡礼リストの JSON から足す。
 - 都道府県ごとの件数が少なすぎる・座標が日本の外にあるときは書き出さず、原因を表示して終わる。
 - 問い合わせの結果は一時フォルダに保存し、同じ問い合わせはやり直しても送らない。
 - Overpass の窓口につながらない・混んでいるときは、ほかの公開の窓口（OVERPASS_APIS）に切り替える。
@@ -32,6 +33,8 @@ import urllib.request
 from datetime import date
 from pathlib import Path
 
+import pilgrimage_places
+
 # Overpass の公開窓口。つながらないときは次の窓口に切り替える（どの窓口も同じ OpenStreetMap のデータを持つ）
 OVERPASS_APIS = [
     "https://overpass-api.de/api/interpreter",
@@ -47,6 +50,8 @@ REQUEST_INTERVAL = 5.0
 # 断られたときにやり直す回数（窓口を切り替えながら、どの窓口も3回ずつ試す）と、Retry-After がないときの待ち時間（秒）
 MAX_RETRIES = 3 * len(OVERPASS_APIS) + 1
 DEFAULT_RETRY_WAIT = 60
+# どの窓口にもつながらなかったときの待ち時間（秒）。手元のネットワークや DNS が一時的に切れたときに、やり直しを使い切らない
+UNREACHABLE_RETRY_WAIT = 30
 # Overpass が1件の問い合わせにかけてよい時間（秒）と、受け取りを待つ時間（秒）
 QUERY_TIMEOUT = 600
 READ_TIMEOUT = 900
@@ -157,6 +162,9 @@ def request_with_retry(query: str) -> str:
             if isinstance(error, urllib.error.URLError) and isinstance(error.reason, OSError):
                 print(f"  窓口につながりませんでした（{attempt}/{MAX_RETRIES - 1}）: {error.reason!r}"[:200], flush=True)
                 switch_endpoint()
+                # 窓口をひと回りしてもつながらないなら、手元の通信が切れているとみて少し待つ
+                if attempt % len(OVERPASS_APIS) == 0:
+                    time.sleep(UNREACHABLE_RETRY_WAIT)
                 continue
             print(f"  受け取りが途中で切れたので {wait} 秒後にやり直します（{attempt}/{MAX_RETRIES - 1}）: {error!r}"[:200],
                   flush=True)
@@ -309,6 +317,8 @@ def main() -> None:
         spots.extend(found)
 
     spots = deduplicate(spots)
+    spots, tagged, added, conflicted = pilgrimage_places.merge(spots, pilgrimage_places.load_places())
+    pilgrimage_places.print_report(tagged, added, conflicted)
     problems = validate(spots)
     if problems:
         print(f"× {len(problems)} 件の問題があるため書き出しません:")

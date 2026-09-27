@@ -21,8 +21,9 @@ This repository describes how the shrine / temple / castle database bundled with
 - 市区町村（表 `spot_area`）は、国土数値情報「行政区域データ（N03）」（国土交通省、[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)）の市区町村の境界を使って決めています。
   出典：国土数値情報（行政区域データ）（国土交通省）を加工して作成。下の「市区町村」を見てください。
   The `spot_area` table is derived using the administrative boundaries of the National Land Numerical Information (N03, MLIT, CC BY 4.0).
-- 札所の一覧（`GoshuinApp/Resources/Pilgrimages/*.json`）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
-- スクリプト（`scripts/spot/` の `fetch.py`・`details.py`・`wikipedia.py`・`summaries.py`・`municipality.py`）は MIT License です（`LICENSE`）。
+- 巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`。日本100名城・続日本100名城・全国一の宮・西国三十三所・四国八十八ヶ所）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
+  OpenStreetMap から集まらなかった巡礼リストの場所は、この名前・座標・QID で `spots` に足しています（下の「巡礼リストの場所を足す」）。
+- スクリプト（`scripts/spot/` の `fetch.py`・`pilgrimage_places.py`・`details.py`・`wikipedia.py`・`summaries.py`・`municipality.py`）は MIT License です（`LICENSE`）。
 
 ## 作り方 / How to build
 
@@ -46,6 +47,24 @@ OpenStreetMap のデータは日々更新されるため、作った日によっ
 - way・relation は代表点（center）を使います。
 - 「本殿」「拝殿」のような境内の建物の名前だけのものは除きます。
 - 同じ名前で 50m 以内のものは1件にまとめます。境内と同じ名前の建物は、500m 以内なら1件にまとめます。
+- 最後に、巡礼リストの場所のうち集まらなかったものを足します（下の「巡礼リストの場所を足す」。`fetch.py` の中で通します）。
+
+### 巡礼リストの場所を足す / Pilgrimage places
+
+OpenStreetMap では、城跡の多く（上田城・甲府城・五稜郭など）が `historic=castle` ではなく公園や遺跡として登録されていて、上の取り方では集まりません。
+そこで、巡礼リストの場所を `scripts/spot/pilgrimage_places.py` で照らし合わせ、足りないものを埋めます。
+
+```
+python3 scripts/spot/pilgrimage_places.py                  # 今の DB に足すだけのとき（通信しません。データの版も作り直します。続けて municipality.py も流します）
+python3 -m unittest scripts/spot/test_pilgrimage_places.py  # 照らし合わせのテスト（通信しない）
+```
+
+- 同じ QID の場所が `spots` にあれば、何もしません。
+- 同じ分類で 1km 以内に同じ名前の場所があれば、いちばん近いものに QID を付けます（QID のない場所だけ）。
+  名前は `details.py` と同じくならし（旧字体・括弧書き）、別名も試します。後ろに「跡」「址」「公園」などが付いた形（上田城跡公園）も同じとみなします。
+  OpenStreetMap の名前は空白で区切った1語ずつも試します（「西国33番 谷汲山 華厳寺」）。頭に言葉が付いた形（播州清水寺）は 100m 以内だけ同じとみなします。
+- いちばん近い同じ名前の場所が別の QID を持っていれば、どちらが正しいかを決めず、そのままにします。
+- どれでもなければ、巡礼リストの名前・座標・QID で新しく足します。`id` は `q` と QID の数字（`q969909`）で、作り直しても変わりません。
 
 ### 表 / Schema
 
@@ -53,7 +72,7 @@ OpenStreetMap のデータは日々更新されるため、作った日によっ
 
 | 列 | 中身 |
 | --- | --- |
-| `id` | OpenStreetMap の要素（`n123`・`w456`・`r789`） |
+| `id` | OpenStreetMap の要素（`n123`・`w456`・`r789`）。巡礼リストから足した場所は `q` と QID の数字（`q969909`） |
 | `name` | 名前（`name:ja`、なければ `name`） |
 | `kana` | 読み（`name:ja-Hira`・`name:ja_kana`・`name:ja-Kana` をひらがなにしたもの。ないときは空） |
 | `category` | `shrine`・`temple`・`castle` |
@@ -117,7 +136,7 @@ python3 scripts/spot/wikipedia.py
 python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト（通信しない）
 ```
 
-- 対象は、国宝の建物がある寺社・城（`spot_details` の `cultural_properties`）と、札所の一覧（`GoshuinApp/Resources/Pilgrimages/*.json`）の札所だけです。
+- 対象は、国宝の建物がある寺社・城（`spot_details` の `cultural_properties`）と、巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`）の場所だけです。
 - Wikidata の QID から日本語版の記事の名前を引き（`wbgetentities` の sitelinks）、記事の本文（wikitext）の情報欄と冒頭の文（TextExtracts）を読みます。
 - 値は書式（脚注・リンク・読みがなだけの括弧）を外して短くするだけにし、言い換えません。多いときは4件までにして「など」を付けます。
 - 冒頭の文は、最初の段落の文を 160 字まで（文の途中で切らない）そのまま使います。
@@ -130,7 +149,7 @@ python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト�
 
 | 列 | 中身 |
 | --- | --- |
-| `qid` | Wikidata の ID（`spots` の `wikidata`、札所の一覧の QID） |
+| `qid` | Wikidata の ID（`spots` の `wikidata`、巡礼リストの QID） |
 | `title`・`url` | 記事の名前・URL |
 | `summary` | 冒頭の文 |
 | `deity`・`honzon`・`sect`・`rank` | 主祭神・本尊・宗派・社格 |
