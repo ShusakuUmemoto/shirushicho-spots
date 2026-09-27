@@ -14,6 +14,7 @@
      OpenStreetMap の名前は空白で区切った1語ずつも試す（「西国33番 谷汲山 華厳寺」「都農神社 日向國一之宮」）。
      頭に言葉が付いた形（播州清水寺／清水寺）は、PREFIXED_MATCH_DISTANCE 以内だけ同じとみなす（同じ名前の寺社は各地にあるため）。
      いちばん近い同じ名前の場所が別の QID を持っていれば、足さずにそのままにする（どちらが正しいかをここでは決めない）。
+     調べて OpenStreetMap の QID が誤りとわかったものは、先に WIKIDATA_CORRECTIONS で直す。
   3. どれでもなければ、巡礼リストの名前・座標で新しく足す。id は「q」と QID の数字（q969909）で、作り直しても変わらない。
 - fetch.py は DB を作り直すときにこの処理を通す。単独で流したときは、データの版（meta の dataVersion と spots-version.txt）も書き直す。
   市区町村の表（spot_area）がある DB に単独で流したら、足した場所に市区町村を付けるため municipality.py も流し直す。
@@ -48,6 +49,14 @@ WIKIDATA_ID_PREFIX = "q"
 HIRAGANA = ("ぁ", "ゖ")
 # 閉じていない括弧書き（「青葉山 松尾寺（matsuno o dera)」の全角と半角の食い違い）から後ろ
 UNCLOSED_PARENTHESIS = re.compile(r"[（(].*$")
+# OpenStreetMap の QID の誤りの直し。id →（OpenStreetMap の QID、正しい QID）。
+# OpenStreetMap の値が1つ目と違えば（向こうで直った・変わった）直さない
+WIKIDATA_CORRECTIONS = {
+    # 甲斐国一宮の浅間神社（笛吹市）に、市川三郷町の一宮浅間神社の QID が付いている（2026-09-28 に Wikidata で確かめた）
+    "n2461655369": ("Q11352589", "Q11557476"),
+    # 市川三郷町の一宮浅間神社（Wikidata の座標と同じ所）。上の QID の本来の場所
+    "n6484004551": ("", "Q11352589"),
+}
 
 
 # MARK: - 巡礼リスト
@@ -134,10 +143,24 @@ def new_spot(place: dict) -> dict:
     }
 
 
-def merge(spots: list[dict], places: list[dict]) -> tuple[list[dict], list[tuple[dict, dict]], list[dict], list[tuple[dict, dict]]]:
+def correct_wikidata(spots: list[dict]) -> list[tuple[dict, str]]:
+    """WIKIDATA_CORRECTIONS の QID を直す。返すのは（直した場所、元の QID）"""
+    corrected = []
+    for spot in spots:
+        correction = WIKIDATA_CORRECTIONS.get(spot["id"])
+        if correction is None or spot["wikidata"] != correction[0]:
+            continue
+        spot["wikidata"] = correction[1]
+        corrected.append((spot, correction[0]))
+    return corrected
+
+
+def merge(spots: list[dict], places: list[dict]) -> tuple[list[dict], list[tuple[dict, dict]], list[dict], list[tuple[dict, dict]], list[tuple[dict, str]]]:
     """spots（fetch.py の形の辞書）に巡礼リストの場所を足す。QID を付けた場所は書き換える。
     返すのは（足したあとの spots、QID を付けた（巡礼リストの場所、DB の場所）、新しく足した場所、
-    別の QID を持つ同じ名前の場所があってそのままにした（巡礼リストの場所、DB の場所））"""
+    別の QID を持つ同じ名前の場所があってそのままにした（巡礼リストの場所、DB の場所）、
+    QID の誤りを直した（DB の場所、元の QID））"""
+    corrected = correct_wikidata(spots)
     known_qids = {spot["wikidata"] for spot in spots if spot["wikidata"]}
     tagged: list[tuple[dict, dict]] = []
     added: list[dict] = []
@@ -157,10 +180,15 @@ def merge(spots: list[dict], places: list[dict]) -> tuple[list[dict], list[tuple
             spots.append(spot)
             added.append(spot)
         known_qids.add(place["qid"])
-    return spots, tagged, added, conflicted
+    return spots, tagged, added, conflicted, corrected
 
 
-def print_report(tagged: list[tuple[dict, dict]], added: list[dict], conflicted: list[tuple[dict, dict]]) -> None:
+def print_report(tagged: list[tuple[dict, dict]], added: list[dict], conflicted: list[tuple[dict, dict]],
+                 corrected: list[tuple[dict, str]]) -> None:
+    if corrected:
+        print(f"○ QID の誤りを直した場所: {len(corrected)} か所")
+        for spot, old_qid in corrected:
+            print(f"  - {spot['name']}（{spot['id']}）: {old_qid or 'なし'} → {spot['wikidata']}")
     print(f"○ QID を付けた場所: {len(tagged)} か所")
     for place, spot in tagged:
         print(f"  - {place['name']} → {spot['name']}（{spot['id']}）")
@@ -204,9 +232,9 @@ def main() -> None:
         raise SystemExit(f"DB がありません: {args.db}（先に fetch.py を流す）")
 
     connection = sqlite3.connect(args.db)
-    spots, tagged, added, conflicted = merge(read_spots(connection), load_places())
-    print_report(tagged, added, conflicted)
-    if not tagged and not added:
+    spots, tagged, added, conflicted, corrected = merge(read_spots(connection), load_places())
+    print_report(tagged, added, conflicted, corrected)
+    if not tagged and not added and not corrected:
         print("足すものはありませんでした（DB は書き換えません）")
         connection.close()
         return

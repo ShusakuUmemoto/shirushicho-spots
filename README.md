@@ -59,6 +59,7 @@ python3 scripts/spot/pilgrimage_places.py                  # 今の DB に足す
 python3 -m unittest scripts/spot/test_pilgrimage_places.py  # 照らし合わせのテスト（通信しない）
 ```
 
+- 先に、OpenStreetMap の QID の誤りを Wikidata で確かめたものだけ `WIKIDATA_CORRECTIONS` の表で直します（甲斐国一宮の浅間神社に、市川三郷町の一宮浅間神社の QID が付いていたなど）。OpenStreetMap の値が表と違えば（向こうで直ったなど）、直しません。
 - 同じ QID の場所が `spots` にあれば、何もしません。
 - 同じ分類で 1km 以内に同じ名前の場所があれば、いちばん近いものに QID を付けます（QID のない場所だけ）。
   名前は `details.py` と同じくならし（旧字体・括弧書き）、別名も試します。後ろに「跡」「址」「公園」などが付いた形（上田城跡公園）も同じとみなします。

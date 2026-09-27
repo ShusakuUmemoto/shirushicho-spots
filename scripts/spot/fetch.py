@@ -317,8 +317,8 @@ def main() -> None:
         spots.extend(found)
 
     spots = deduplicate(spots)
-    spots, tagged, added, conflicted = pilgrimage_places.merge(spots, pilgrimage_places.load_places())
-    pilgrimage_places.print_report(tagged, added, conflicted)
+    spots, tagged, added, conflicted, corrected = pilgrimage_places.merge(spots, pilgrimage_places.load_places())
+    pilgrimage_places.print_report(tagged, added, conflicted, corrected)
     problems = validate(spots)
     if problems:
         print(f"× {len(problems)} 件の問題があるため書き出しません:")
