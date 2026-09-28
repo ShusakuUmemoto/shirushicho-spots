@@ -133,11 +133,18 @@ python3 scripts/spot/details.py
 （`details.py` のあとに流します。`fetch.py` → `details.py` → `wikipedia.py` の順）。
 
 ```
+python3 scripts/spot/wikipedia.py --dry-run          # 対象を確かめるだけ（通信も DB の変更もしない）
 python3 scripts/spot/wikipedia.py
 python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト（通信しない）
 ```
 
-- 対象は、国宝の建物がある寺社・城（`spot_details` の `cultural_properties`）と、巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`）の場所だけです。
+- 対象は、次の場所です。全国の寺社すべては集めません。
+  - 国宝・重要文化財の建物がある寺社・城（`spot_details` の `cultural_properties`）
+  - 巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`）の場所
+  - `scripts/spot/featured_places.json` で選んだ代表的な寺社・城（175か所。人気の順位ではなく、47都道府県から編集で選んだもの）。
+    QID・名前・都道府県が DB の `spots` と一致しないときは、通信の前に止まります。
+- 対象と取得の結果（記事の名前・冒頭の文・情報欄と、記事がない・冒頭の文がない・情報欄の項目がないといった欠落）は、確かめ用に `archive/spot/wikipedia-report.json` に書きます（`--report` で置き場所を変えられます。DB や入力のファイルと同じ場所は指定できません）。
+- すでに DB にある記事や、空でなかった項目が取れなくなるときは、DB を書き換えずに止まります。表の作り直しは1つのトランザクションで行い、途中で失敗したら元の表を残します。
 - Wikidata の QID から日本語版の記事の名前を引き（`wbgetentities` の sitelinks）、記事の本文（wikitext）の情報欄と冒頭の文（TextExtracts）を読みます。
 - 値は書式（脚注・リンク・読みがなだけの括弧）を外して短くするだけにし、言い換えません。多いときは4件までにして「など」を付けます。
 - 冒頭の文は、最初の段落の文を 160 字まで（文の途中で切らない）そのまま使います。

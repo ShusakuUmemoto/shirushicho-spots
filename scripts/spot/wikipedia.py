@@ -2,12 +2,14 @@
 """日本語版 Wikipedia の記事から、寺社・城の「鍵」（ご祭神・ご本尊・宗派・社格・城郭構造など）と冒頭の数文を取り、spots.sqlite に書き足す。
 
 使い方（リポジトリのルートで。details.py のあとに流す。fetch.py は DB を作り直すので、そのあとは details.py → wikipedia.py の順に流し直す）:
-    python3 scripts/spot/wikipedia.py            # 国宝のある寺社・城と、巡礼リストの札所
+    python3 scripts/spot/wikipedia.py            # 国宝・重要文化財のある寺社・城、巡礼リストの場所、代表的な場所
     python3 scripts/spot/wikipedia.py --refresh  # 保存した答えを使わず取り直す
     python3 scripts/spot/wikipedia.py --db 別の.sqlite  # 試すとき
 
-- 集めるのは、国宝の建物がある寺社・城（spot_details の cultural_properties。details.py が文化庁のデータから書く）と、
-  巡礼リストの札所（GoshuinApp/Resources/Pilgrimages/*.json）だけ。全国の寺社すべては集めない（有名な所から始める）。
+- 集めるのは、国宝・重要文化財の建物がある寺社・城、巡礼リストの場所、featured_places.json で選んだ代表的な場所。
+  代表的な場所の QID・名前・都道府県が DB と一致するか、通信の前に確かめる。
+- --dry-run は通信も DB の変更もせず、対象と選定理由を --report の JSON に書く。
+  通常実行では同じ JSON に説明・情報欄の欠落も書く。既存の記事が取れなかったときは DB を書き換えずに止まる。
 - Wikidata の QID から日本語版の記事の名前を引き（wbgetentities の sitelinks）、記事の本文（wikitext）の情報欄と、冒頭の文（TextExtracts）を読む。
   情報欄は型の名前（日本の寺院・神社・日本の城 など）に頼らず、主祭神・本尊・城郭構造などの項目を持つ最初の型を使う。
 - 値は書式（脚注・リンク・改行・読みがなだけの括弧）を外して短くするだけにし、言い換えない。多ければ MAX_ITEMS 件までにして「など」を付ける。
@@ -41,6 +43,8 @@ from details import (CACHE_DIR, DEFAULT_DB, DEFAULT_VERSION_FILE, MAX_RETRIES, R
                      USER_AGENT, data_version, write_version_file)
 
 ROOT = Path(__file__).resolve().parents[2]
+FEATURED_PLACES_FILE = Path(__file__).with_name("featured_places.json")
+DEFAULT_REPORT = ROOT / "archive" / "spot" / "wikipedia-report.json"
 PILGRIMAGE_FILES = ROOT / "GoshuinApp" / "Resources" / "Pilgrimages" / "pilgrimage-*.json"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
 WIKIPEDIA_API = "https://ja.wikipedia.org/w/api.php"
@@ -340,15 +344,106 @@ def summary_of(extract: str) -> str:
 
 # MARK: - 集める先
 
-def target_qids(connection: sqlite3.Connection) -> list[str]:
-    """国宝の建物がある寺社・城と、巡礼リストの札所の QID（重なりを除き、決まった順）"""
-    qids = {qid for (qid,) in connection.execute(
-        "SELECT s.wikidata FROM spots s JOIN spot_details d ON d.id = s.id "
-        "WHERE d.cultural_properties LIKE '%国宝%' AND s.wikidata != ''")}
-    for path in sorted(glob.glob(str(PILGRIMAGE_FILES))):
+def target_places(connection: sqlite3.Connection, featured_file: Path = FEATURED_PLACES_FILE,
+                  pilgrimage_files: str = str(PILGRIMAGE_FILES)) -> dict[str, dict]:
+    """取得対象の名前と選定理由。同じ QID の理由はまとめる。"""
+    targets: dict[str, dict] = {}
+
+    def add(qid: str, name: str, reason: str) -> None:
+        if not re.fullmatch(r"Q[1-9][0-9]*", qid):
+            raise ValueError(f"Wikidata の ID が不正です: {name} / {qid}")
+        target = targets.setdefault(qid, {"qid": qid, "names": [], "reasons": []})
+        if name not in target["names"]:
+            target["names"].append(name)
+        if reason not in target["reasons"]:
+            target["reasons"].append(reason)
+
+    for qid, name in connection.execute(
+            "SELECT s.wikidata, s.name FROM spots s JOIN spot_details d ON d.id = s.id "
+            "WHERE (d.cultural_properties LIKE '%国宝%' OR d.cultural_properties LIKE '%重要文化財%') "
+            "AND s.wikidata != '' ORDER BY s.id"):
+        add(qid, name, "国宝・重要文化財の建物")
+    for path in sorted(glob.glob(pilgrimage_files)):
         pilgrimage = json.loads(Path(path).read_text(encoding="utf-8"))
-        qids |= {spot["id"] for spot in pilgrimage["spots"] if spot["id"].startswith("Q")}
-    return sorted(qids, key=lambda qid: int(qid[1:]))
+        for spot in pilgrimage["spots"]:
+            if spot["id"].startswith("Q"):
+                add(spot["id"], spot["name"], "巡礼リストの場所")
+
+    featured = json.loads(featured_file.read_text(encoding="utf-8"))
+    seen: set[str] = set()
+    for place in featured["places"]:
+        qid, name, prefecture, reason = (place[key] for key in ("qid", "name", "prefecture", "reason"))
+        if not all(isinstance(value, str) and value.strip() for value in (qid, name, prefecture, reason)):
+            raise ValueError("代表的な場所には ID・名前・都道府県・選定理由が必要です")
+        if qid in seen:
+            raise ValueError(f"代表的な場所の ID が重なっています: {qid}")
+        seen.add(qid)
+        matched = connection.execute(
+            "SELECT 1 FROM spots WHERE wikidata = ? AND name = ? AND prefecture = ?",
+            (qid, name, prefecture)).fetchone()
+        if matched is None:
+            raise ValueError(f"代表的な場所が DB と一致しません: {name}（{prefecture}）/ {qid}")
+        add(qid, name, f"代表的な場所: {reason}")
+    return dict(sorted(targets.items(), key=lambda item: int(item[0][1:])))
+
+
+def build_rows(titles: dict[str, str], contents: dict[str, tuple[str, str]],
+               extracts: dict[str, str]) -> dict[str, dict]:
+    """通信の結果を既存の表と同じ形にする。欠落した項目は補作しない。"""
+    rows = {}
+    for qid, title in titles.items():
+        wikitext, revised = contents.get(title, ("", ""))
+        keys = keys_of(infobox(wikitext))
+        summary = summary_of(extracts.get(title, ""))
+        if not summary and not any(keys.values()):
+            continue
+        rows[qid] = {"title": title, "url": ARTICLE_URL + urllib.parse.quote(title.replace(" ", "_")),
+                     "summary": summary, **keys, "revised": revised, "license": LICENSE}
+    return rows
+
+
+def write_report(path: Path, targets: dict[str, dict], titles: dict[str, str] | None = None,
+                 rows: dict[str, dict] | None = None) -> None:
+    places = []
+    for qid, target in targets.items():
+        place = dict(target)
+        if titles is not None:
+            row = (rows or {}).get(qid, {})
+            place["title"] = titles.get(qid)
+            place["issues"] = []
+            if qid not in titles:
+                place["issues"].append("日本語記事なし")
+            else:
+                if not row.get("summary"):
+                    place["issues"].append("説明文なし")
+                if not any(row.get(key) for key in FIELDS):
+                    place["issues"].append("情報欄の項目なし")
+            place["summary"] = row.get("summary", "")
+            place["fields"] = {key: row[key] for key in FIELDS if row.get(key)}
+        places.append(place)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    payload = {"mode": "targets" if titles is None else "fetched", "count": len(places), "places": places}
+    path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+
+
+def ensure_existing_articles(connection: sqlite3.Connection, rows: dict[str, dict]) -> None:
+    """取得できなかった既存の記事を、表の作り直しで消さない。"""
+    exists = connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='spot_wiki'").fetchone()
+    if not exists:
+        return
+    missing = [qid for (qid,) in connection.execute("SELECT qid FROM spot_wiki") if qid not in rows]
+    if missing:
+        raise ValueError(f"既存の記事 {len(missing)} 件を取得できないため、DB は変更しません: {', '.join(missing)}")
+    # 通信結果の一部だけが空でも、既存の説明や情報欄を消さず、確認してから再実行する
+    lost = []
+    columns = ("summary", *FIELDS)
+    for values in connection.execute(f"SELECT qid, {', '.join(columns)} FROM spot_wiki"):
+        qid = values[0]
+        for column, previous in zip(columns, values[1:]):
+            if previous and not rows[qid].get(column):
+                lost.append(f"{qid}/{column}")
+    if lost:
+        raise ValueError(f"既存の項目 {len(lost)} 件が空になるため、DB は変更しません: {', '.join(lost)}")
 
 
 # MARK: - 書き込み
@@ -357,66 +452,78 @@ WIKI_COLUMNS = ("title", "url", "summary", *FIELDS, "revised", "license")
 
 
 def write(connection: sqlite3.Connection, rows: dict[str, dict]) -> None:
-    connection.execute("DROP TABLE IF EXISTS spot_wiki")
-    column_definitions = ", ".join(f"{column} TEXT NOT NULL" for column in WIKI_COLUMNS)
-    connection.execute(f"CREATE TABLE spot_wiki (qid TEXT PRIMARY KEY, {column_definitions})")
-    placeholders = ", ".join(f":{column}" for column in ("qid",) + WIKI_COLUMNS)
-    connection.executemany(f"INSERT INTO spot_wiki VALUES ({placeholders})",
-                           [{"qid": qid, **row} for qid, row in rows.items()])
-    connection.executemany("INSERT OR REPLACE INTO meta VALUES (?, ?)", [
-        ("wikiCount", str(len(rows))),
-        ("dataVersion", data_version(connection)),
-        ("updatedAt", datetime.date.today().isoformat()),
-    ])
-    connection.commit()
+    # 表の作り直しを途中で失敗しても、元の情報を残す
+    with connection:
+        connection.execute("BEGIN")
+        connection.execute("DROP TABLE IF EXISTS spot_wiki")
+        column_definitions = ", ".join(f"{column} TEXT NOT NULL" for column in WIKI_COLUMNS)
+        connection.execute(f"CREATE TABLE spot_wiki (qid TEXT PRIMARY KEY, {column_definitions})")
+        placeholders = ", ".join(f":{column}" for column in ("qid",) + WIKI_COLUMNS)
+        connection.executemany(f"INSERT INTO spot_wiki VALUES ({placeholders})",
+                               [{"qid": qid, **row} for qid, row in rows.items()])
+        connection.executemany("INSERT OR REPLACE INTO meta VALUES (?, ?)", [
+            ("wikiCount", str(len(rows))),
+            ("dataVersion", data_version(connection)),
+            ("updatedAt", datetime.date.today().isoformat()),
+        ])
     connection.execute("VACUUM")
+
+
+def validate_report_path(report: Path, database: Path) -> None:
+    """確認用の一覧で、読み取り元やアプリのデータを上書きしない。"""
+    protected = [database, DEFAULT_DB, DEFAULT_VERSION_FILE, DEFAULT_SUMMARIES_FILE, FEATURED_PLACES_FILE]
+    protected.extend(Path(path) for path in glob.glob(str(PILGRIMAGE_FILES)))
+    for source in protected:
+        same_path = report.resolve() == source.resolve()
+        same_file = report.exists() and source.exists() and report.samefile(source)
+        if same_path or same_file:
+            raise ValueError(f"確認用の一覧は入力・配布ファイルと別の場所に保存してください: {report}")
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--db", type=Path, default=DEFAULT_DB)
     parser.add_argument("--refresh", action="store_true")
+    parser.add_argument("--dry-run", action="store_true", help="通信も DB の変更もせず、取得対象を確認する")
+    parser.add_argument("--report", type=Path, default=DEFAULT_REPORT, help="対象と取得結果の確認用 JSON")
     args = parser.parse_args()
 
     if not args.db.exists():
         raise SystemExit(f"DB がありません: {args.db}（先に fetch.py と details.py を流す）")
-    connection = sqlite3.connect(args.db)
-    qids = target_qids(connection)
-    print(f"■ 集める先: {len(qids)} か所（国宝のある寺社・城と、巡礼リストの札所）", flush=True)
-    titles = article_titles(qids, args.refresh)
-    print(f"  日本語版の記事があるのは {len(titles)} か所", flush=True)
-    unique_titles = sorted(set(titles.values()))
-    contents = article_contents(unique_titles, args.refresh)
-    extracts = article_extracts(unique_titles, args.refresh)
-
-    rows: dict[str, dict] = {}
-    without_infobox = []
-    for qid, title in titles.items():
-        wikitext, revised = contents.get(title, ("", ""))
-        keys = keys_of(infobox(wikitext))
-        summary = summary_of(extracts.get(title, ""))
-        if not summary and not any(keys.values()):
-            continue
-        if not any(keys.values()):
-            without_infobox.append(title)
-        rows[qid] = {"title": title, "url": ARTICLE_URL + urllib.parse.quote(title.replace(" ", "_")),
-                     "summary": summary, **keys, "revised": revised, "license": LICENSE}
-
-    write(connection, rows)
-    print(f"○ {len(rows)} か所の鍵と冒頭の文を書きました: {args.db}")
-    for key in FIELDS:
-        print(f"  {key}: {sum(1 for row in rows.values() if row[key])} か所")
-    missing = [qid for qid in qids if qid not in titles]
-    if missing:
-        print(f"  記事のない {len(missing)} か所: {'、'.join(missing[:60])}")
-    if without_infobox:
-        print(f"  情報欄の鍵が取れなかった {len(without_infobox)} か所: {'、'.join(without_infobox[:60])}")
-    # アプリに入れる DB を作ったときだけ、本体の版のファイルも書き換える（試しの DB で本体の版を変えない）
-    if args.db.resolve() == DEFAULT_DB.resolve():
-        write_version_file(connection, DEFAULT_VERSION_FILE)
-        # 梅プランの人の「〇〇について」に出す1文目（アプリ本体に入る）も書き直す
-        print(f"○ {write_summaries(connection, DEFAULT_SUMMARIES_FILE)} か所の1文目を書きました: {DEFAULT_SUMMARIES_FILE}")
-    connection.close()
+    try:
+        validate_report_path(args.report, args.db)
+    except (OSError, ValueError) as error:
+        raise SystemExit(str(error)) from error
+    connection = sqlite3.connect(f"{args.db.resolve().as_uri()}?mode={'ro' if args.dry_run else 'rw'}", uri=True)
+    try:
+        targets = target_places(connection)
+        qids = list(targets)
+        print(f"■ 集める先: {len(qids)} か所（文化財・巡礼リスト・代表的な場所）", flush=True)
+        if args.dry_run:
+            write_report(args.report, targets)
+            print(f"○ 取得対象を書きました（通信・DB 変更なし）: {args.report}")
+            return
+        titles = article_titles(qids, args.refresh)
+        print(f"  日本語版の記事があるのは {len(titles)} か所", flush=True)
+        unique_titles = sorted(set(titles.values()))
+        contents = article_contents(unique_titles, args.refresh)
+        extracts = article_extracts(unique_titles, args.refresh)
+        rows = build_rows(titles, contents, extracts)
+        write_report(args.report, targets, titles, rows)
+        print(f"○ 説明・情報欄の欠落を含む確認用の一覧: {args.report}")
+        ensure_existing_articles(connection, rows)
+        write(connection, rows)
+        print(f"○ {len(rows)} か所の鍵と冒頭の文を書きました: {args.db}")
+        for key in FIELDS:
+            print(f"  {key}: {sum(1 for row in rows.values() if row[key])} か所")
+        # 試しの DB で本体の版や冒頭の文を書き換えない
+        if args.db.resolve() == DEFAULT_DB.resolve():
+            write_version_file(connection, DEFAULT_VERSION_FILE)
+            print(f"○ {write_summaries(connection, DEFAULT_SUMMARIES_FILE)} か所の1文目を書きました: {DEFAULT_SUMMARIES_FILE}")
+    except (OSError, ValueError, KeyError, sqlite3.Error) as error:
+        raise SystemExit(f"Wikipedia のデータを作れませんでした: {error}") from error
+    finally:
+        connection.close()
 
 
 if __name__ == "__main__":

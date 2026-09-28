@@ -4,3 +4,5 @@ GoshuinApp/*
 !GoshuinApp/Resources/
 GoshuinApp/Resources/*
 !GoshuinApp/Resources/Pilgrimages/
+# wikipedia.py の確かめ用の一覧
+archive/
