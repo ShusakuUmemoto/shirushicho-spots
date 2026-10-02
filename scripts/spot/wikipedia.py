@@ -2,12 +2,15 @@
 """日本語版 Wikipedia の記事から、寺社・城の「鍵」（ご祭神・ご本尊・宗派・社格・城郭構造など）と冒頭の数文を取り、spots.sqlite に書き足す。
 
 使い方（リポジトリのルートで。details.py のあとに流す。fetch.py は DB を作り直すので、そのあとは details.py → wikipedia.py の順に流し直す）:
-    python3 scripts/spot/wikipedia.py            # 国宝・重要文化財のある寺社・城、巡礼リストの場所、代表的な場所
+    python3 scripts/spot/wikipedia.py            # 国宝・重要文化財のある寺社・城、巡礼リストの場所、代表的な場所、閲覧数の上位
     python3 scripts/spot/wikipedia.py --refresh  # 保存した答えを使わず取り直す
     python3 scripts/spot/wikipedia.py --db 別の.sqlite  # 試すとき
 
 - 集めるのは、国宝・重要文化財の建物がある寺社・城、巡礼リストの場所、featured_places.json で選んだ代表的な場所。
   代表的な場所の QID・名前・都道府県が DB と一致するか、通信の前に確かめる。
+  残りは、popular.py が作る popular_places.json（日本語版の記事の閲覧数の順）の上から、合計が TARGET_TOTAL か所になるまで足す。
+  閲覧数はここでは問い合わせない（一覧はファイルに残し、選び方を再現できるようにする）。
+  順位の線が動いても、一度入れた記事は外さない（合計は TARGET_TOTAL を少し超える）。
 - --dry-run は通信も DB の変更もせず、対象と選定理由を --report の JSON に書く。
   通常実行では同じ JSON に説明・情報欄の欠落も書く。既存の記事が取れなかったときは DB を書き換えずに止まる。
 - Wikidata の QID から日本語版の記事の名前を引き（wbgetentities の sitelinks）、記事の本文（wikitext）の情報欄と、冒頭の文（TextExtracts）を読む。
@@ -44,6 +47,10 @@ from details import (CACHE_DIR, DEFAULT_DB, DEFAULT_VERSION_FILE, MAX_RETRIES, R
 
 ROOT = Path(__file__).resolve().parents[2]
 FEATURED_PLACES_FILE = Path(__file__).with_name("featured_places.json")
+POPULAR_PLACES_FILE = Path(__file__).with_name("popular_places.json")
+POPULAR_OVERRIDES_FILE = Path(__file__).with_name("popular_overrides.json")
+# 集める場所の合計の目安（文化財・巡礼リスト・代表的な場所の残りを、閲覧数の上位で埋める）
+TARGET_TOTAL = 3000
 DEFAULT_REPORT = ROOT / "archive" / "spot" / "wikipedia-report.json"
 PILGRIMAGE_FILES = ROOT / "GoshuinApp" / "Resources" / "Pilgrimages" / "pilgrimage-*.json"
 WIKIDATA_API = "https://www.wikidata.org/w/api.php"
@@ -98,16 +105,21 @@ CLOSING_PARENTHESES = "）)"
 # MARK: - 取得
 
 def request(api: str, params: dict, refresh: bool) -> dict:
-    """窓口に問い合わせた JSON。同じ問い合わせは保存した答えを返す"""
+    """MediaWiki の窓口に問い合わせた JSON。同じ問い合わせは保存した答えを返す"""
     query = urllib.parse.urlencode({**params, "format": "json", "formatversion": "2"})
-    url = f"{api}?{query}"
+    return fetch_json(f"{api}?{query}", refresh)
+
+
+def fetch_json(url: str, refresh: bool, not_found_ok: bool = False, interval: float | None = None) -> dict | None:
+    """URL の JSON。同じ URL は保存した答えを返す。not_found_ok なら、404（閲覧数の記録がない記事など）は None を返して残す。
+    interval は送る前にあける秒数（既定は REQUEST_INTERVAL。窓口の決まりが違うときだけ変える）"""
     cache_path = WIKI_CACHE_DIR / (hashlib.sha256(url.encode()).hexdigest() + ".json")
     if cache_path.exists() and not refresh:
         return json.loads(cache_path.read_text(encoding="utf-8"))
     http_request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            time.sleep(REQUEST_INTERVAL)
+            time.sleep(REQUEST_INTERVAL if interval is None else interval)
             with urllib.request.urlopen(http_request, timeout=READ_TIMEOUT) as response:
                 data = json.loads(response.read())
             if "error" in data:
@@ -116,6 +128,10 @@ def request(api: str, params: dict, refresh: bool) -> dict:
             cache_path.write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
             return data
         except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+            if not_found_ok and isinstance(error, urllib.error.HTTPError) and error.code == 404:
+                WIKI_CACHE_DIR.mkdir(parents=True, exist_ok=True)
+                cache_path.write_text("null", encoding="utf-8")
+                return None
             if attempt == MAX_RETRIES:
                 raise SystemExit(f"取得できませんでした: {url[:200]}\n  {error!r}")
             print(f"  取得できなかったので {RETRY_WAIT} 秒後にやり直します（{attempt}/{MAX_RETRIES - 1}）: {error!r}"[:200],
@@ -345,8 +361,11 @@ def summary_of(extract: str) -> str:
 # MARK: - 集める先
 
 def target_places(connection: sqlite3.Connection, featured_file: Path = FEATURED_PLACES_FILE,
-                  pilgrimage_files: str = str(PILGRIMAGE_FILES)) -> dict[str, dict]:
-    """取得対象の名前と選定理由。同じ QID の理由はまとめる。"""
+                  pilgrimage_files: str = str(PILGRIMAGE_FILES), popular_file: Path = POPULAR_PLACES_FILE,
+                  total: int = TARGET_TOTAL) -> dict[str, dict]:
+    """取得対象の名前と選定理由。同じ QID の理由はまとめる。
+    文化財・巡礼リスト・代表的な場所はすべて入れ、残りを閲覧数の上位で total か所まで埋める。
+    最後に、すでに spot_wiki にある記事を残す（このぶんは total を超えてよい）。"""
     targets: dict[str, dict] = {}
 
     def add(qid: str, name: str, reason: str) -> None:
@@ -384,6 +403,27 @@ def target_places(connection: sqlite3.Connection, featured_file: Path = FEATURED
         if matched is None:
             raise ValueError(f"代表的な場所が DB と一致しません: {name}（{prefecture}）/ {qid}")
         add(qid, name, f"代表的な場所: {reason}")
+
+    # 閲覧数の多い順に、合計が total に届くまで足す（popular.py が作る。まだなければ足さない）
+    if popular_file.exists():
+        popular = json.loads(popular_file.read_text(encoding="utf-8"))
+        for place in popular["places"]:
+            if len(targets) >= total:
+                break
+            if place.get("needsReview") or place.get("excluded"):
+                continue
+            qid = place["qid"]
+            names = [name for (name,) in connection.execute("SELECT DISTINCT name FROM spots WHERE wikidata = ?", (qid,))]
+            if not names:
+                raise ValueError(f"閲覧数の一覧の場所が DB にありません: {place.get('title')} / {qid}")
+            add(qid, names[0], f"閲覧数の上位（{place['rank']}位・{popular['window']} に {place['views']:,} 回）")
+
+    # 一度入れた記事は外さない（順位の線が動いても、利用者がもう見ている情報を次のデータで消さない）。total の外に足す
+    has_wiki = connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='spot_wiki'").fetchone()
+    if has_wiki:
+        for qid, title in connection.execute("SELECT qid, title FROM spot_wiki ORDER BY qid"):
+            if qid not in targets:
+                add(qid, title, "前から入っている記事")
     return dict(sorted(targets.items(), key=lambda item: int(item[0][1:])))
 
 
@@ -471,7 +511,8 @@ def write(connection: sqlite3.Connection, rows: dict[str, dict]) -> None:
 
 def validate_report_path(report: Path, database: Path) -> None:
     """確認用の一覧で、読み取り元やアプリのデータを上書きしない。"""
-    protected = [database, DEFAULT_DB, DEFAULT_VERSION_FILE, DEFAULT_SUMMARIES_FILE, FEATURED_PLACES_FILE]
+    protected = [database, DEFAULT_DB, DEFAULT_VERSION_FILE, DEFAULT_SUMMARIES_FILE, FEATURED_PLACES_FILE,
+                 POPULAR_PLACES_FILE, POPULAR_OVERRIDES_FILE]
     protected.extend(Path(path) for path in glob.glob(str(PILGRIMAGE_FILES)))
     for source in protected:
         same_path = report.resolve() == source.resolve()
@@ -498,7 +539,10 @@ def main() -> None:
     try:
         targets = target_places(connection)
         qids = list(targets)
-        print(f"■ 集める先: {len(qids)} か所（文化財・巡礼リスト・代表的な場所）", flush=True)
+        print(f"■ 集める先: {len(qids)} か所（文化財・巡礼リスト・代表的な場所・閲覧数の上位）", flush=True)
+        if not POPULAR_PLACES_FILE.exists():
+            print(f"  △ 閲覧数の一覧がないので、閲覧数の上位は足していません（先に popular.py を流す）: {POPULAR_PLACES_FILE}",
+                  flush=True)
         if args.dry_run:
             write_report(args.report, targets)
             print(f"○ 取得対象を書きました（通信・DB 変更なし）: {args.report}")

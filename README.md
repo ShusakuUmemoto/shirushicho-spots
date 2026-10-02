@@ -21,9 +21,11 @@ This repository describes how the shrine / temple / castle database bundled with
 - 市区町村（表 `spot_area`）は、国土数値情報「行政区域データ（N03）」（国土交通省、[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.ja)）の市区町村の境界を使って決めています。
   出典：国土数値情報（行政区域データ）（国土交通省）を加工して作成。下の「市区町村」を見てください。
   The `spot_area` table is derived using the administrative boundaries of the National Land Numerical Information (N03, MLIT, CC BY 4.0).
-- 巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`。日本100名城・続日本100名城・全国一の宮・西国三十三所・四国八十八ヶ所）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
+- 巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`。日本100名城・続日本100名城・全国一の宮・西国三十三所・四国八十八ヶ所・熊野三山）は、番号・名前が Wikipedia（CC BY-SA 4.0）の一覧表、QID・座標の一部が Wikidata（CC0）から来ています。
   OpenStreetMap から集まらなかった巡礼リストの場所は、この名前・座標・QID で `spots` に足しています（下の「巡礼リストの場所を足す」）。
-- スクリプト（`scripts/spot/` の `fetch.py`・`pilgrimage_places.py`・`details.py`・`wikipedia.py`・`summaries.py`・`municipality.py`）は MIT License です（`LICENSE`）。
+- QID を付けるときと、Wikipedia の情報を集める場所を選ぶときに、日本語版 Wikipedia の記事の名前・座標と閲覧数（Wikimedia の Pageviews API）を使っています。
+  結果は `scripts/spot/wikidata_links.json`・`popular_places.json` に置いています（下の「QID を付ける」「Wikipedia の情報」）。
+- スクリプト（`scripts/spot/` の `fetch.py`・`pilgrimage_places.py`・`wikidata_links.py`・`details.py`・`popular.py`・`wikipedia.py`・`summaries.py`・`municipality.py`）は MIT License です（`LICENSE`）。
 
 ## 作り方 / How to build
 
@@ -48,6 +50,7 @@ OpenStreetMap のデータは日々更新されるため、作った日によっ
 - 「本殿」「拝殿」のような境内の建物の名前だけのものは除きます。
 - 同じ名前で 50m 以内のものは1件にまとめます。境内と同じ名前の建物は、500m 以内なら1件にまとめます。
 - 最後に、巡礼リストの場所のうち集まらなかったものを足します（下の「巡礼リストの場所を足す」。`fetch.py` の中で通します）。
+- 続けて、QID のない場所に `wikidata_links.json` の QID を付けます（下の「QID を付ける」。`fetch.py` の中で通します）。
 
 ### 巡礼リストの場所を足す / Pilgrimage places
 
@@ -66,6 +69,26 @@ python3 -m unittest scripts/spot/test_pilgrimage_places.py  # 照らし合わせ
   OpenStreetMap の名前は空白で区切った1語ずつも試します（「西国33番 谷汲山 華厳寺」）。頭に言葉が付いた形（播州清水寺）は 100m 以内だけ同じとみなします。
 - いちばん近い同じ名前の場所が別の QID を持っていれば、どちらが正しいかを決めず、そのままにします。
 - どれでもなければ、巡礼リストの名前・座標・QID で新しく足します。`id` は `q` と QID の数字（`q969909`）で、作り直しても変わりません。
+
+### QID を付ける / Wikidata links
+
+OpenStreetMap で `wikidata` の付いていない寺社・城（日吉大社・立石寺など）には、日本語版 Wikipedia の同じ名前の記事から QID を付けます。
+
+```
+python3 scripts/spot/wikidata_links.py --find                # 候補を探して wikidata_links.json に書く（通信します。DB は変えません）
+python3 scripts/spot/wikidata_links.py                       # wikidata_links.json の QID を今の DB に当てる（通信しません。データの版も作り直します）
+python3 -m unittest scripts/spot/test_wikidata_links.py      # テスト（通信しない）
+```
+
+- QID のない場所の名前を、そのまま記事の名前として引きます（50件ずつ。転送もたどります）。
+- 次のすべてを満たすときだけ候補にします。
+  - 記事があり、曖昧さ回避のページでなく、座標と QID がある。
+  - その QID が DB のどの場所にもまだない（1つの QID を2か所に付けない）。
+  - 記事の座標から 1km 以内に、その名前の QID のない場所がある。複数あれば、いちばん近い1か所だけ。
+  - 記事の名前と DB の名前が重なる（旧字体・括弧書き・山号をならして同じか、片方がもう片方を含み、短い方が「寺」「神社」「城」などで終わる）。
+- 「八幡神社」のように各地にある名前は、記事が一般の説明か曖昧さ回避で座標がないので、候補になりません。
+- 確かめて誤りと分かったもの（寺社・城でない施設の記事など）は、`wikidata_links.json` の `exclude` に場所の id と理由を書きます。探し直しても残ります。
+- 当てるのは、場所の id が同じで、まだ QID のない場所だけです。OpenStreetMap の側で QID が付いた所は、OpenStreetMap の値を残します。
 
 ### 表 / Schema
 
@@ -143,6 +166,8 @@ python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト�
   - 巡礼リスト（`GoshuinApp/Resources/Pilgrimages/*.json`）の場所
   - `scripts/spot/featured_places.json` で選んだ代表的な寺社・城（175か所。人気の順位ではなく、47都道府県から編集で選んだもの）。
     QID・名前・都道府県が DB の `spots` と一致しないときは、通信の前に止まります。
+  - 残りは、`scripts/spot/popular_places.json`（下の「閲覧数の順位」）の上から、合計が 3,000 か所になるまで足します。
+  - すでに `spot_wiki` にある記事は、順位が下がっても外しません（合計は 3,000 を少し超えます）。
 - 対象と取得の結果（記事の名前・冒頭の文・情報欄と、記事がない・冒頭の文がない・情報欄の項目がないといった欠落）は、確かめ用に `archive/spot/wikipedia-report.json` に書きます（`--report` で置き場所を変えられます。DB や入力のファイルと同じ場所は指定できません）。
 - すでに DB にある記事や、空でなかった項目が取れなくなるときは、DB を書き換えずに止まります。表の作り直しは1つのトランザクションで行い、途中で失敗したら元の表を残します。
 - Wikidata の QID から日本語版の記事の名前を引き（`wbgetentities` の sitelinks）、記事の本文（wikitext）の情報欄と冒頭の文（TextExtracts）を読みます。
@@ -150,6 +175,22 @@ python3 -m unittest scripts/spot/test_wikipedia.py   # 読み取りのテスト�
 - 冒頭の文は、最初の段落の文を 160 字まで（文の途中で切らない）そのまま使います。
 - 窓口には User-Agent を付け、送るたびに1秒あけます。答えは一時フォルダに残し、やり直しても送りません。
 - 最後に `scripts/spot/summaries.py` で、各場所の1文目だけを `GoshuinApp/Resources/spot-summaries.json` に書き出します（アプリ本体に入れるもの。DB を落とさない人の画面に出します）。
+
+### 閲覧数の順位 / Pageviews ranking
+
+```
+python3 scripts/spot/popular.py --dry-run             # 対象の数と問い合わせの回数の見込み（通信しない）
+python3 scripts/spot/popular.py                       # 記事の名前と閲覧数を問い合わせて popular_places.json に書く（DB は変えない）
+python3 -m unittest scripts/spot/test_popular.py      # テスト（通信しない）
+```
+
+- QID のある場所の日本語版の記事ごとに、Wikimedia の Pageviews API（`https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/…`）で、直近12か月の人の閲覧（`agent=user`）を合計します。
+  記録のない記事は 0 回です。窓口の決まりに合わせ、閲覧数は送るたびに 0.2 秒、ほかは 1 秒あけます。
+- 転送のページから来た閲覧は、記事の側に数えられません。呼び名と記事の名前が違う所（金閣寺→鹿苑寺など）は、実際の人気より少なく出ます。
+- 記事の名前と DB の名前が重ならない所と、2つ以上の都道府県の場所に同じ QID が付いている所には `needsReview` を付け、足しません。
+  確かめた結果は `scripts/spot/popular_overrides.json` に書きます。
+  - `accept`: 同じ場所（旧字体の違い、呼び名と正式な名前の違いなど）
+  - `exclude`: 別の記事（人物・地形の記事など）や、寺社・城でない所（皇室の施設・景勝地など）
 
 ### 表 / Schema
 

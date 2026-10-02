@@ -10,7 +10,9 @@ import sys
 import subprocess
 import tempfile
 import unittest
+import urllib.error
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import summaries  # noqa: E402
@@ -145,6 +147,7 @@ class TargetPlacesTests(unittest.TestCase):
         self.directory = Path(temporary_directory.name)
         self.featured = self.directory / "featured.json"
         self.featured.write_text('{"places": []}', encoding="utf-8")
+        self.popular = self.directory / "popular.json"
         self.connection = sqlite3.connect(":memory:")
         self.addCleanup(self.connection.close)
         self.connection.executescript("""
@@ -158,9 +161,9 @@ class TargetPlacesTests(unittest.TestCase):
         self.connection.execute("INSERT INTO spot_details VALUES (?, ?)",
                                 (identifier, cultural_properties))
 
-    def targets(self):
+    def targets(self, total=wikipedia.TARGET_TOTAL):
         return wikipedia.target_places(self.connection, self.featured,
-                                       str(self.directory / "pilgrimage-*.json"))
+                                       str(self.directory / "pilgrimage-*.json"), self.popular, total)
 
     def write_featured(self, places):
         self.featured.write_text(json.dumps({"places": places}, ensure_ascii=False), encoding="utf-8")
@@ -210,6 +213,43 @@ class TargetPlacesTests(unittest.TestCase):
         self.write_featured([{**place, "reason": " "}])
         with self.assertRaisesRegex(ValueError, "選定理由が必要"):
             self.targets()
+
+    def write_popular(self, places):
+        ranked = [{"rank": rank, "views": 1000 - rank, **place} for rank, place in enumerate(places, start=1)]
+        self.popular.write_text(json.dumps({"window": "2025-10〜2026-09", "places": ranked}, ensure_ascii=False),
+                                encoding="utf-8")
+
+    def test_閲覧数の上位で合計まで埋め確かめが要る所と除いた所は飛ばす(self):
+        self.add_spot(1, "Q1", "国宝寺", "国宝: 本堂")
+        for identifier, qid in enumerate(["Q2", "Q3", "Q4", "Q5"], start=2):
+            self.add_spot(identifier, qid, f"人気寺{qid}")
+        self.write_popular([{"qid": "Q1", "title": "国宝寺"},  # すでに入っている所は数を増やさない
+                            {"qid": "Q2", "title": "山の記事", "needsReview": True},
+                            {"qid": "Q3", "title": "人気寺Q3"},
+                            {"qid": "Q4", "title": "人気寺Q4", "excluded": "別の施設の記事"},
+                            {"qid": "Q5", "title": "人気寺Q5"}])
+        targets = self.targets(total=2)
+        self.assertEqual(list(targets), ["Q1", "Q3"])
+        self.assertEqual(targets["Q1"]["reasons"], ["国宝・重要文化財の建物", "閲覧数の上位（1位・2025-10〜2026-09 に 999 回）"])
+        self.assertEqual(self.targets(total=3).keys(), {"Q1", "Q3", "Q5"})
+
+    def test_一度入れた記事は合計を超えても残す(self):
+        self.add_spot(1, "Q1", "人気寺")
+        self.connection.executescript("""
+            CREATE TABLE spot_wiki (qid TEXT, title TEXT);
+            INSERT INTO spot_wiki VALUES ('Q1', '人気寺'), ('Q7', '前の人気寺');
+        """)
+        self.write_popular([{"qid": "Q1", "title": "人気寺"}])
+        targets = self.targets(total=1)
+        self.assertEqual(list(targets), ["Q1", "Q7"])
+        self.assertEqual(targets["Q7"], {"qid": "Q7", "names": ["前の人気寺"], "reasons": ["前から入っている記事"]})
+
+    def test_閲覧数の一覧の場所がDBになければ拒否し一覧がなければ足さない(self):
+        self.write_popular([{"qid": "Q9", "title": "どこか"}])
+        with self.assertRaisesRegex(ValueError, "DB にありません"):
+            self.targets()
+        self.popular.unlink()
+        self.assertEqual(self.targets(), {})
 
     def test_文化財側の不正なIDを拒否する(self):
         self.add_spot(1, "Qinvalid", "国宝寺", "国宝: 本堂")
@@ -274,6 +314,32 @@ class ArticleResultsTests(unittest.TestCase):
                          [("Q1", "既存の説明", "既存の祭神")])
         wikipedia.ensure_existing_articles(connection,
                                            {"Q1": {"summary": "更新した説明", "deity": "既存の祭神"}, "Q2": {}})
+
+
+class FetchTests(unittest.TestCase):
+    def setUp(self):
+        temporary_directory = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary_directory.cleanup)
+        patches = [mock.patch.object(wikipedia, "WIKI_CACHE_DIR", Path(temporary_directory.name)),
+                   mock.patch.object(wikipedia, "REQUEST_INTERVAL", 0)]
+        for patch in patches:
+            patch.start()
+            self.addCleanup(patch.stop)
+
+    def not_found(self, *args, **kwargs):
+        raise urllib.error.HTTPError("https://example.org/a", 404, "Not Found", {}, None)
+
+    def test_許したときだけ404をNoneにして残し次は送らない(self):
+        with mock.patch.object(wikipedia.urllib.request, "urlopen", side_effect=self.not_found) as urlopen:
+            self.assertIsNone(wikipedia.fetch_json("https://example.org/a", refresh=False, not_found_ok=True))
+            self.assertIsNone(wikipedia.fetch_json("https://example.org/a", refresh=False, not_found_ok=True))
+        self.assertEqual(urlopen.call_count, 1)
+
+    def test_許していなければ404で止まる(self):
+        with mock.patch.object(wikipedia, "MAX_RETRIES", 1), \
+                mock.patch.object(wikipedia.urllib.request, "urlopen", side_effect=self.not_found):
+            with self.assertRaises(SystemExit):
+                wikipedia.fetch_json("https://example.org/b", refresh=False)
 
 
 class ReportPathTests(unittest.TestCase):

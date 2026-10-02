@@ -1,0 +1,72 @@
+{
+ "id": "kumano",
+ "title": "熊野三山",
+ "category": "神社",
+ "selectedBy": "世界遺産「紀伊山地の霊場と参詣道」",
+ "spots": [
+  {
+   "id": "Q705035",
+   "number": 1,
+   "name": "熊野本宮大社",
+   "aliases": [
+    "熊野坐神社",
+    "熊野本宮",
+    "熊野本宮社"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 33.8404,
+   "longitude": 135.7736
+  },
+  {
+   "id": "Q335618",
+   "number": 2,
+   "name": "熊野速玉大社",
+   "aliases": [
+    "熊野新宮",
+    "熊野早玉神社"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 33.7321,
+   "longitude": 135.9836
+  },
+  {
+   "id": "Q710359",
+   "number": 3,
+   "name": "熊野那智大社",
+   "aliases": [
+    "十三所権現",
+    "熊野十二所権現",
+    "熊野夫須美神社",
+    "熊野那智宮",
+    "熊野那智神社",
+    "那智山権現",
+    "那智神社"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 33.668568,
+   "longitude": 135.890493
+  },
+  {
+   "id": "Q1476235",
+   "number": 4,
+   "name": "青岸渡寺",
+   "aliases": [
+    "那智山",
+    "那智山青岸渡寺"
+   ],
+   "prefecture": "和歌山県",
+   "latitude": 33.66916667,
+   "longitude": 135.89,
+   "category": "寺院"
+  },
+  {
+   "id": "Q2585020",
+   "number": 5,
+   "name": "補陀洛山寺",
+   "prefecture": "和歌山県",
+   "latitude": 33.644725,
+   "longitude": 135.93443611,
+   "category": "寺院"
+  }
+ ]
+}

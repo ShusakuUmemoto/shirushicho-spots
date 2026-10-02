@@ -12,6 +12,7 @@
   名前のない小さな祠と、「本殿」「拝殿」のような境内の建物の名前だけのものは除く。way・relation は代表点（center）を使う。
 - 同じ名前で 50m 以内のもの（node と way の重複など）は1件にまとめる。境内と同じ名前の建物は 500m 以内ならまとめる。
 - 巡礼リストの場所のうち集まらなかったもの（公園・遺跡として登録された城跡など）は、pilgrimage_places.py で巡礼リストの JSON から足す。
+- OpenStreetMap で QID のない場所には、wikidata_links.json（wikidata_links.py --find で探したもの）の QID を付ける。
 - 都道府県ごとの件数が少なすぎる・座標が日本の外にあるときは書き出さず、原因を表示して終わる。
 - 問い合わせの結果は一時フォルダに保存し、同じ問い合わせはやり直しても送らない。
 - Overpass の窓口につながらない・混んでいるときは、ほかの公開の窓口（OVERPASS_APIS）に切り替える。
@@ -34,6 +35,7 @@ from datetime import date
 from pathlib import Path
 
 import pilgrimage_places
+import wikidata_links
 
 # Overpass の公開窓口。つながらないときは次の窓口に切り替える（どの窓口も同じ OpenStreetMap のデータを持つ）
 OVERPASS_APIS = [
@@ -319,6 +321,8 @@ def main() -> None:
     spots = deduplicate(spots)
     spots, tagged, added, conflicted, corrected = pilgrimage_places.merge(spots, pilgrimage_places.load_places())
     pilgrimage_places.print_report(tagged, added, conflicted, corrected)
+    linked = wikidata_links.apply_links(spots, *wikidata_links.load())
+    print(f"○ Wikipedia の記事から QID を付けた場所: {len(linked)} か所（wikidata_links.json）", flush=True)
     problems = validate(spots)
     if problems:
         print(f"× {len(problems)} 件の問題があるため書き出しません:")
