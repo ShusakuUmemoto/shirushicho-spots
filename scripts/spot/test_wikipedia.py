@@ -148,6 +148,7 @@ class TargetPlacesTests(unittest.TestCase):
         self.featured = self.directory / "featured.json"
         self.featured.write_text('{"places": []}', encoding="utf-8")
         self.popular = self.directory / "popular.json"
+        self.overrides = self.directory / "overrides.json"
         self.connection = sqlite3.connect(":memory:")
         self.addCleanup(self.connection.close)
         self.connection.executescript("""
@@ -163,7 +164,7 @@ class TargetPlacesTests(unittest.TestCase):
 
     def targets(self, total=wikipedia.TARGET_TOTAL):
         return wikipedia.target_places(self.connection, self.featured,
-                                       str(self.directory / "pilgrimage-*.json"), self.popular, total)
+                                       str(self.directory / "pilgrimage-*.json"), self.popular, total, self.overrides)
 
     def write_featured(self, places):
         self.featured.write_text(json.dumps({"places": places}, ensure_ascii=False), encoding="utf-8")
@@ -243,6 +244,9 @@ class TargetPlacesTests(unittest.TestCase):
         targets = self.targets(total=1)
         self.assertEqual(list(targets), ["Q1", "Q7"])
         self.assertEqual(targets["Q7"], {"qid": "Q7", "names": ["前の人気寺"], "reasons": ["前から入っている記事"]})
+        # 誤りと分かって exclude に書いた記事は残さない
+        self.overrides.write_text(json.dumps({"accept": {}, "exclude": {"Q7": "山の記事"}}), encoding="utf-8")
+        self.assertEqual(list(self.targets(total=1)), ["Q1"])
 
     def test_閲覧数の一覧の場所がDBになければ拒否し一覧がなければ足さない(self):
         self.write_popular([{"qid": "Q9", "title": "どこか"}])
@@ -314,6 +318,8 @@ class ArticleResultsTests(unittest.TestCase):
                          [("Q1", "既存の説明", "既存の祭神")])
         wikipedia.ensure_existing_articles(connection,
                                            {"Q1": {"summary": "更新した説明", "deity": "既存の祭神"}, "Q2": {}})
+        # exclude に書いた記事（removable）だけは消してよい
+        wikipedia.ensure_existing_articles(connection, {"Q2": {"summary": "新しい説明"}}, removable={"Q1"})
 
 
 class FetchTests(unittest.TestCase):

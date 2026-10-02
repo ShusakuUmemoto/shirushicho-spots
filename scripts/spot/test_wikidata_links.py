@@ -84,6 +84,17 @@ class ApplyLinksTests(unittest.TestCase):
         self.assertEqual([item["wikidata"] for item in spots], ["Q1", "Q7", "", "", "Q5"])
 
 
+class MergeLinksTests(unittest.TestCase):
+    def test_当てたあとの前の候補を残し新しい候補を足す(self):
+        spots = [spot("w1", "日吉大社", wikidata="Q1"), spot("w2", "立石寺"), spot("w3", "貴船神社", wikidata="Q8"),
+                 spot("w4", "外した神社"), spot("w5", "新しい寺")]
+        previous = {"w1": {"qid": "Q1"}, "w2": {"qid": "Q2"}, "w3": {"qid": "Q3"}, "w4": {"qid": "Q4"},
+                    "w9": {"qid": "Q9"}}
+        merged = wikidata_links.merge_links(spots, previous, {"w5": {"qid": "Q5"}}, {"w4": "別の記事"})
+        # w1 は当てたあと、w2 はまだ当てていない。w3 は OpenStreetMap で別の QID が付いた、w4 は外した、w9 は DB にない
+        self.assertEqual(merged, {"w1": {"qid": "Q1"}, "w2": {"qid": "Q2"}, "w5": {"qid": "Q5"}})
+
+
 class FilesTests(unittest.TestCase):
     def test_書いた候補と外した場所を読み直せ理由のない除外は拒否する(self):
         with tempfile.TemporaryDirectory() as directory:

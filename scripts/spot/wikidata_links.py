@@ -15,6 +15,7 @@
   - 記事の名前と DB の名前が重なる（popular.names_overlap。転送で別の記事に行った所を防ぐ。「山寺」→ 立石寺のような呼び名の転送も付けない）。
   「八幡神社」のように各地にある名前は、記事が一般の説明か曖昧さ回避で座標がないので、候補にならない。
 - 確かめて誤りと分かったものは、wikidata_links.json の exclude に場所の id と理由を書く（--find で探し直しても残す）。
+  前の候補も、探し直したときに残す（当てたあとの場所は QID があって見つからないため。merge_links）。
 - 当て方: 場所の id が同じで、まだ QID のない場所にだけ付ける。OpenStreetMap の側で QID が付いた所は、OpenStreetMap の値を残す。
   同じ QID がすでに DB にあれば付けない。fetch.py も、巡礼リストの場所を足したあとにこれを通す（DB を作り直しても残る）。
 - spot_area は場所の id で引くので、単独で流しても作り直さなくてよい。
@@ -108,6 +109,17 @@ def find_links(spots: list[dict], pages: dict[str, dict], excluded: set[str]) ->
     return dict(sorted(links.items()))
 
 
+def merge_links(spots: list[dict], previous: dict[str, dict], found: dict[str, dict],
+                excluded: dict[str, str]) -> dict[str, dict]:
+    """前に書いた候補に、新しく見つけた候補を足す。
+    当てたあとの場所は QID があるので find_links では見つからない。前の候補を消すと、fetch.py で DB を作り直したときに QID が抜ける。
+    前の候補は、その場所が DB にあり、QID がまだないか同じ QID のときだけ残す（OpenStreetMap で別の QID が付いた所・外した所は落とす）"""
+    current = {spot["id"]: spot["wikidata"] for spot in spots}
+    kept = {spot_id: link for spot_id, link in previous.items()
+            if spot_id in current and current[spot_id] in ("", link["qid"]) and spot_id not in excluded}
+    return dict(sorted({**kept, **found}.items()))
+
+
 # MARK: - 当てる
 
 def load(path: Path = LINKS_FILE) -> tuple[dict[str, dict], dict[str, str]]:
@@ -167,8 +179,9 @@ def main() -> None:
             names = sorted({spot["name"] for spot in spots if not spot["wikidata"] and is_valid_title(spot["name"])})
             print(f"■ QID のない場所の名前: {len(names)} 種類（{TITLE_BATCH} 件ずつ引く）", flush=True)
             found = find_links(spots, look_up(names, args.refresh), set(excluded))
-            write_links(LINKS_FILE, found, excluded)
-            print(f"○ QID を付ける候補: {len(found)} か所: {LINKS_FILE}")
+            merged = merge_links(spots, links, found, excluded)
+            write_links(LINKS_FILE, merged, excluded)
+            print(f"○ QID を付ける候補: {len(merged)} か所（新しく見つけた {len(found)} か所を含む）: {LINKS_FILE}")
             return
         connection = sqlite3.connect(args.db)
         try:

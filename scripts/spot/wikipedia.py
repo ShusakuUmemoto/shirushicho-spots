@@ -362,10 +362,11 @@ def summary_of(extract: str) -> str:
 
 def target_places(connection: sqlite3.Connection, featured_file: Path = FEATURED_PLACES_FILE,
                   pilgrimage_files: str = str(PILGRIMAGE_FILES), popular_file: Path = POPULAR_PLACES_FILE,
-                  total: int = TARGET_TOTAL) -> dict[str, dict]:
+                  total: int = TARGET_TOTAL, overrides_file: Path = POPULAR_OVERRIDES_FILE) -> dict[str, dict]:
     """取得対象の名前と選定理由。同じ QID の理由はまとめる。
     文化財・巡礼リスト・代表的な場所はすべて入れ、残りを閲覧数の上位で total か所まで埋める。
-    最後に、すでに spot_wiki にある記事を残す（このぶんは total を超えてよい）。"""
+    最後に、すでに spot_wiki にある記事を残す（このぶんは total を超えてよい）。
+    ただし popular_overrides.json の exclude に書いた記事は残さない（誤りと分かった記事を外す道）。"""
     targets: dict[str, dict] = {}
 
     def add(qid: str, name: str, reason: str) -> None:
@@ -419,12 +420,23 @@ def target_places(connection: sqlite3.Connection, featured_file: Path = FEATURED
             add(qid, names[0], f"閲覧数の上位（{place['rank']}位・{popular['window']} に {place['views']:,} 回）")
 
     # 一度入れた記事は外さない（順位の線が動いても、利用者がもう見ている情報を次のデータで消さない）。total の外に足す
-    has_wiki = connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='spot_wiki'").fetchone()
-    if has_wiki:
+    if has_table(connection, "spot_wiki"):
+        excluded = excluded_articles(overrides_file)
         for qid, title in connection.execute("SELECT qid, title FROM spot_wiki ORDER BY qid"):
-            if qid not in targets:
+            if qid not in targets and qid not in excluded:
                 add(qid, title, "前から入っている記事")
     return dict(sorted(targets.items(), key=lambda item: int(item[0][1:])))
+
+
+def has_table(connection: sqlite3.Connection, name: str) -> bool:
+    return connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (name,)).fetchone() is not None
+
+
+def excluded_articles(overrides_file: Path = POPULAR_OVERRIDES_FILE) -> set[str]:
+    """popular_overrides.json の exclude の QID（誤りと分かった記事。前からある記事でも外してよい）"""
+    if not overrides_file.exists():
+        return set()
+    return set(json.loads(overrides_file.read_text(encoding="utf-8")).get("exclude", {}))
 
 
 def build_rows(titles: dict[str, str], contents: dict[str, tuple[str, str]],
@@ -466,12 +478,12 @@ def write_report(path: Path, targets: dict[str, dict], titles: dict[str, str] | 
     path.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
-def ensure_existing_articles(connection: sqlite3.Connection, rows: dict[str, dict]) -> None:
-    """取得できなかった既存の記事を、表の作り直しで消さない。"""
-    exists = connection.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='spot_wiki'").fetchone()
-    if not exists:
+def ensure_existing_articles(connection: sqlite3.Connection, rows: dict[str, dict],
+                             removable: set[str] = frozenset()) -> None:
+    """取得できなかった既存の記事を、表の作り直しで消さない。removable（exclude に書いた記事）だけは消してよい。"""
+    if not has_table(connection, "spot_wiki"):
         return
-    missing = [qid for (qid,) in connection.execute("SELECT qid FROM spot_wiki") if qid not in rows]
+    missing = [qid for (qid,) in connection.execute("SELECT qid FROM spot_wiki") if qid not in rows and qid not in removable]
     if missing:
         raise ValueError(f"既存の記事 {len(missing)} 件を取得できないため、DB は変更しません: {', '.join(missing)}")
     # 通信結果の一部だけが空でも、既存の説明や情報欄を消さず、確認してから再実行する
@@ -479,6 +491,8 @@ def ensure_existing_articles(connection: sqlite3.Connection, rows: dict[str, dic
     columns = ("summary", *FIELDS)
     for values in connection.execute(f"SELECT qid, {', '.join(columns)} FROM spot_wiki"):
         qid = values[0]
+        if qid not in rows:
+            continue
         for column, previous in zip(columns, values[1:]):
             if previous and not rows[qid].get(column):
                 lost.append(f"{qid}/{column}")
@@ -555,7 +569,7 @@ def main() -> None:
         rows = build_rows(titles, contents, extracts)
         write_report(args.report, targets, titles, rows)
         print(f"○ 説明・情報欄の欠落を含む確認用の一覧: {args.report}")
-        ensure_existing_articles(connection, rows)
+        ensure_existing_articles(connection, rows, excluded_articles())
         write(connection, rows)
         print(f"○ {len(rows)} か所の鍵と冒頭の文を書きました: {args.db}")
         for key in FIELDS:
